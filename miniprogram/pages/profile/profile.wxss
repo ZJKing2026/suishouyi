@@ -1,0 +1,134 @@
+
+
+.hero {
+  display: flex;
+  align-items: center;
+  padding: 40rpx 32rpx;
+  background: var(--surface);
+  border-radius: var(--r-card);
+  margin-bottom: 24rpx;
+}
+
+.avatar {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 44rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+}
+
+.user-info { flex: 1; }
+
+.nickname {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8rpx;
+}
+
+.userid {
+  font-size: 24rpx;
+  color: var(--ink-faint);
+}
+
+.stat-card {
+  display: flex;
+  background: var(--surface);
+  border-radius: var(--r-card);
+  padding: 40rpx 0;
+  margin-bottom: 24rpx;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 44rpx;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: var(--ink-faint);
+}
+
+/* 配置状态 */
+.config-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx;
+  border-radius: var(--r-card);
+  margin-bottom: 24rpx;
+}
+
+.config-ok { background: var(--ok-soft); color: var(--ok); }
+.config-warn { background: var(--warn-soft); color: var(--warn); }
+
+.config-banner-text { flex: 1; }
+
+.config-banner-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.config-banner-sub {
+  font-size: 24rpx;
+  opacity: 0.85;
+}
+
+.config-banner-arrow {
+  font-size: 40rpx;
+  opacity: 0.5;
+  margin-left: 20rpx;
+}
+
+/* 菜单 */
+.menu {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  margin-bottom: 24rpx;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.menu-item:last-child { border-bottom: none; }
+
+.menu-text {
+  font-size: 30rpx;
+  color: var(--ink);
+}
+
+.menu-danger {
+  color: var(--danger);
+}
+
+.menu-arrow {
+  font-size: 36rpx;
+  color: var(--ink-ghost);
+}
+
+.footer {
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--ink-ghost);
+  padding: 40rpx 0;
+}

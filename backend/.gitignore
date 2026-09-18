@@ -1,0 +1,16 @@
+# 环境变量文件（保护你的 API Key 不被泄露）
+.env
+
+# 本地 SQLite 数据库文件
+*.db
+
+# Python 运行产生的缓存
+__pycache__/
+*.pyc
+
+# 虚拟环境文件夹（太大了，绝不能传到 GitHub）
+.venv/
+venv/
+
+# 测试缓存
+.pytest_cache/

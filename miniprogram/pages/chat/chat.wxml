@@ -1,0 +1,117 @@
+<view class="chat-page">
+
+  <!-- ========== 遮罩层 ========== -->
+  <view class="mask {{ drawerOpen ? 'mask-show' : '' }}" bindtap="closeDrawer"></view>
+
+  <!-- ========== 左侧抽屉 ========== -->
+  <view class="drawer {{ drawerOpen ? 'drawer-open' : '' }}">
+
+    <!-- 抽屉头部 -->
+    <view class="drawer-header">
+      <view class="drawer-title">我的对话</view>
+      <view class="drawer-new" bindtap="onNewChat">+</view>
+    </view>
+
+    <!-- 会话列表 -->
+    <scroll-view class="session-list" scroll-y>
+      <view
+        wx:for="{{ sessions }}"
+        wx:key="id"
+        class="session-item {{ item.id === sessionId ? 'session-active' : '' }}"
+        data-id="{{ item.id }}"
+        bindtap="onSelectSession"
+        bindlongpress="onLongPressSession"
+      >
+        <view class="session-title">{{ item.title }}</view>
+        <view class="session-time">{{ item.timeLabel }}</view>
+      </view>
+
+      <view class="session-empty" wx:if="{{ sessions.length === 0 }}">
+        还没有对话，点右上角 + 开始
+      </view>
+    </scroll-view>
+
+    <!-- 抽屉底部菜单 -->
+    <view class="drawer-footer">
+      <view class="menu-item" bindtap="onTapTools">
+        <text class="menu-icon">⚙</text>
+        <text class="menu-text">我的工具</text>
+      </view>
+      <view class="menu-item" bindtap="onTapPlugins">
+        <text class="menu-icon">🔌</text>
+        <text class="menu-text">插件</text>
+      </view>
+      <view class="menu-item" bindtap="onTapApiConfig">
+        <text class="menu-icon">🔑</text>
+        <text class="menu-text">API 配置</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ========== 主内容区 ========== -->
+  <view class="main">
+
+    <!-- 自定义顶栏 -->
+    <view class="header">
+      <view class="header-left" bindtap="openDrawer">
+        <view class="hamburger">
+          <view class="line"></view>
+          <view class="line"></view>
+          <view class="line"></view>
+        </view>
+      </view>
+      <view class="header-title">{{ currentTitle }}</view>
+      <view class="header-right"></view>
+    </view>
+
+    <!-- 消息列表 -->
+    <scroll-view
+      class="msg-list"
+      scroll-y
+      scroll-with-animation
+      scroll-into-view="{{ scrollToId }}"
+    >
+      <view class="empty" wx:if="{{ messages.length === 0 }}">
+        <view class="empty-title">开始新的对话</view>
+        <view class="empty-tip">所有对话都保存在你的账户</view>
+      </view>
+
+      <view
+        wx:for="{{ messages }}"
+        wx:key="id"
+        id="msg-{{ item.id }}"
+        class="msg-row {{ item.role === 'user' ? 'row-user' : 'row-ai' }}"
+      >
+        <view class="bubble {{ item.role === 'user' ? 'bubble-user' : 'bubble-ai' }}">
+          {{ item.content }}
+        </view>
+      </view>
+
+      <view wx:if="{{ sending }}" class="msg-row row-ai">
+        <view class="bubble bubble-ai">正在思考...</view>
+      </view>
+
+      <view style="height: 40rpx;"></view>
+    </scroll-view>
+
+    <!-- 输入区 -->
+    <view class="input-bar">
+      <input
+        class="input"
+        placeholder="说点什么..."
+        value="{{ inputText }}"
+        bindinput="onInput"
+        bindconfirm="onSend"
+        confirm-type="send"
+        disabled="{{ sending }}"
+      />
+      <view
+        class="send-btn {{ (!inputText || sending) ? 'send-btn-disabled' : '' }}"
+        bindtap="onSend"
+      >发送</view>
+    </view>
+
+  </view>
+
+</view>

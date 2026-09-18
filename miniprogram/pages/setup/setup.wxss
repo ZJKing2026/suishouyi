@@ -1,0 +1,123 @@
+
+
+.hero { margin-bottom: 60rpx; }
+
+.hero-title {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 16rpx;
+}
+
+.hero-subtitle {
+  font-size: 28rpx;
+  color: var(--ink-faint);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 40rpx 0 24rpx;
+  padding-top: 32rpx;
+  border-top: 1rpx solid var(--line);
+}
+
+.field { margin-bottom: 32rpx; }
+
+.field-label {
+  font-size: 26rpx;
+  color: var(--ink-muted);
+  margin-bottom: 12rpx;
+}
+
+.field-input {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 0 28rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: var(--ink);
+}
+
+.picker {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 0 28rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.picker-arrow {
+  font-size: 24rpx;
+  color: var(--ink-faint);
+}
+
+.field-hint {
+  font-size: 24rpx;
+  color: var(--ink-muted);
+  margin-top: 12rpx;
+  text-decoration: underline;
+}
+
+/* 开关行 */
+.switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 0;
+  margin-top: 20rpx;
+}
+
+.switch-label {
+  font-size: 28rpx;
+  color: var(--ink);
+}
+
+/* 按钮 */
+.btn-row {
+  display: flex;
+  gap: 20rpx;
+  margin: 48rpx 0 32rpx;
+}
+
+.btn-secondary {
+  flex: 1;
+  background: var(--bg-sunken);
+  color: var(--ink);
+  font-size: 30rpx;
+  border-radius: var(--r-btn);
+  border: none;
+  padding: 24rpx 0;
+}
+
+.btn-primary {
+  flex: 1;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 30rpx;
+  border-radius: var(--r-btn);
+  border: none;
+  padding: 24rpx 0;
+}
+
+.btn-primary[disabled] { background: var(--ink-ghost); }
+
+/* 状态 */
+.status {
+  font-size: 26rpx;
+  padding: 24rpx;
+  border-radius: var(--r-sm);
+  line-height: 1.5;
+}
+
+.status-success { background: var(--ok-soft); color: var(--ok); }
+.status-error { background: var(--danger-soft); color: var(--danger); }

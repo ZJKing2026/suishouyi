@@ -1,0 +1,70 @@
+<view class="page">
+
+  <view class="hero">
+    <view class="hero-title">我的工具</view>
+    <view class="hero-subtitle">教给 AI，让它在对话里帮你</view>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{ activeTab === 'mine' ? 'tab-active' : '' }}" data-tab="mine" bindtap="onSwitchTab">我创建的</view>
+    <view class="tab {{ activeTab === 'market' ? 'tab-active' : '' }}" data-tab="market" bindtap="onSwitchTab">工具市场</view>
+  </view>
+
+  <block wx:if="{{ activeTab === 'mine' }}">
+    <view class="empty" wx:if="{{ loading }}">加载中...</view>
+    <view class="empty-card" wx:elif="{{ myTools.length === 0 }}">
+      <view class="empty-title">还没有工具</view>
+      <view class="empty-sub">去工具市场挑一个，或导入 OpenAPI</view>
+      <view class="empty-btn" bindtap="onTapImport">导入 OpenAPI</view>
+    </view>
+    <view wx:else>
+      <view
+        wx:for="{{ myTools }}"
+        wx:key="id"
+        class="tool-item"
+        data-id="{{ item.id }}"
+        bindlongpress="onLongPressTool"
+      >
+        <view class="tool-header">
+          <view class="tool-name">{{ item.display_name || item.name }}</view>
+          <view class="tool-status {{ item.enabled ? 'status-on' : 'status-off' }}">{{ item.enabled ? '已启用' : '已禁用' }}</view>
+        </view>
+        <view class="tool-desc">{{ item.description }}</view>
+      </view>
+      <view class="tip">长按工具可删除</view>
+    </view>
+  </block>
+
+  <block wx:if="{{ activeTab === 'market' }}">
+    <view class="empty" wx:if="{{ marketLoading }}">加载中...</view>
+    <view wx:else>
+      <view wx:for="{{ marketTools }}" wx:key="id" class="market-item">
+        <view class="market-icon">{{ item.icon }}</view>
+        <view class="market-content">
+          <view class="market-header">
+            <view class="market-name">{{ item.display_name }}</view>
+            <view class="market-category">{{ item.category }}</view>
+          </view>
+          <view class="market-desc">{{ item.description }}</view>
+        </view>
+        <view
+          class="market-add {{ item.added ? 'market-added' : '' }}"
+          data-id="{{ item.id }}"
+          data-added="{{ item.added }}"
+          catchtap="onAddTool"
+        >{{ item.added ? '已添加' : '+ 添加' }}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- FAB：我创建的 tab 显示 -->
+  <view class="fab-wrap" wx:if="{{ activeTab === 'mine' }}">
+    <view class="fab fab-small" bindtap="onTapImport" title="导入 OpenAPI">
+      <text class="fab-icon">📥</text>
+    </view>
+    <view class="fab fab-small" bindtap="onTapCreate" title="手动创建">
+      <text class="fab-icon">+</text>
+    </view>
+  </view>
+
+</view>

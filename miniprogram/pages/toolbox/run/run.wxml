@@ -1,0 +1,201 @@
+<view class="page">
+
+  <view class="hero">
+    <view class="hero-title">{{ config.title }}</view>
+    <view class="hero-subtitle">{{ config.desc }}</view>
+  </view>
+
+  <!-- ========== 图片压缩 ========== -->
+  <block wx:if="{{ tool === 'image' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChooseImage">
+        <view class="upload-icon">🖼</view>
+        <view class="upload-text">{{ pickedFile ? '已选择：' + pickedFile.name : '点击选择图片' }}</view>
+      </view>
+      <view class="field">
+        <view class="field-label">压缩质量：{{ quality }}%</view>
+        <slider min="30" max="95" value="{{ quality }}" bindchange="onQualityChange" activeColor="#1a1a1a" />
+      </view>
+      <button class="btn-primary" disabled="{{ !pickedFile || loading }}" loading="{{ loading }}" bindtap="onSubmitImage">开始压缩</button>
+    </view>
+  </block>
+
+  <!-- ========== 二维码 ========== -->
+  <block wx:if="{{ tool === 'qrcode' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="field">
+        <view class="field-label">内容</view>
+        <textarea class="field-textarea" placeholder="输入文字或网址" value="{{ qrText }}" bindinput="onQrTextInput" maxlength="1000" />
+      </view>
+      <view class="field">
+        <view class="field-label">中心图片（可选）</view>
+        <view class="logo-picker" bindtap="onChooseLogo">
+          <image wx:if="{{ logoFile }}" class="logo-preview" src="{{ logoFile.path }}" mode="aspectFill" />
+          <view wx:else class="logo-placeholder">+ 上传 Logo / 头像</view>
+        </view>
+        <view class="field-hint">建议使用方形图片，会自动缩放到中心</view>
+      </view>
+      <button class="btn-primary" disabled="{{ !qrText || loading }}" loading="{{ loading }}" bindtap="onSubmitQrcode">生成二维码</button>
+    </view>
+  </block>
+
+  <!-- ========== 图片转 PDF ========== -->
+  <block wx:if="{{ tool === 'topdf' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChooseImagesForPdf">
+        <view class="upload-icon">📄</view>
+        <view class="upload-text">{{ pdfImages.length > 0 ? '已选 ' + pdfImages.length + ' 张图片' : '点击选择图片（可多选，按顺序）' }}</view>
+      </view>
+      <view class="file-list" wx:if="{{ pdfImages.length > 0 }}">
+        <view class="file-item" wx:for="{{ pdfImages }}" wx:key="index">
+          <text>{{ index + 1 }}. {{ item.name }}</text>
+        </view>
+      </view>
+      <button class="btn-primary" disabled="{{ pdfImages.length === 0 || loading }}" loading="{{ loading }}" bindtap="onSubmitToPdf">生成 PDF</button>
+    </view>
+  </block>
+
+  <!-- ========== 图片加水印 ========== -->
+  <block wx:if="{{ tool === 'watermark' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChooseImage">
+        <view class="upload-icon">💧</view>
+        <view class="upload-text">{{ pickedFile ? '已选择：' + pickedFile.name : '点击选择图片' }}</view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">水印文字</view>
+        <input class="field-input" placeholder="如 © 我的公众号 / @用户名" value="{{ watermarkText }}" bindinput="onWatermarkTextInput" maxlength="30" />
+      </view>
+
+      <view class="field">
+        <view class="field-label">位置</view>
+        <view class="position-grid">
+          <view class="position-item {{ watermarkPos === 'tl' ? 'active' : '' }}" data-pos="tl" bindtap="onPositionChange">左上</view>
+          <view class="position-item {{ watermarkPos === 'tr' ? 'active' : '' }}" data-pos="tr" bindtap="onPositionChange">右上</view>
+          <view class="position-item {{ watermarkPos === 'center' ? 'active' : '' }}" data-pos="center" bindtap="onPositionChange">居中</view>
+          <view class="position-item {{ watermarkPos === 'bl' ? 'active' : '' }}" data-pos="bl" bindtap="onPositionChange">左下</view>
+          <view class="position-item {{ watermarkPos === 'br' ? 'active' : '' }}" data-pos="br" bindtap="onPositionChange">右下</view>
+          <view class="position-item {{ watermarkPos === 'tile' ? 'active' : '' }}" data-pos="tile" bindtap="onPositionChange">平铺</view>
+        </view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">透明度：{{ watermarkOpacity }}%</view>
+        <slider min="20" max="100" value="{{ watermarkOpacity }}" bindchange="onOpacityChange" activeColor="#1a1a1a" />
+      </view>
+
+      <button class="btn-primary" disabled="{{ !pickedFile || !watermarkText || loading }}" loading="{{ loading }}" bindtap="onSubmitWatermark">添加水印</button>
+    </view>
+  </block>
+
+  <!-- ========== PDF 转图片 ========== -->
+  <block wx:if="{{ tool === 'pdf2img' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChoosePdfFile">
+        <view class="upload-icon">🖼</view>
+        <view class="upload-text">{{ pdfFile ? '已选择：' + pdfFile.name : '点击选择 PDF' }}</view>
+      </view>
+      <button class="btn-primary" disabled="{{ !pdfFile || loading }}" loading="{{ loading }}" bindtap="onSubmitPdfToImg">开始转换</button>
+    </view>
+  </block>
+
+  <!-- ========== 图片拼接长图 ========== -->
+  <block wx:if="{{ tool === 'merge' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChooseImagesForMerge">
+        <view class="upload-icon">🧵</view>
+        <view class="upload-text">{{ mergeImages.length > 0 ? '已选 ' + mergeImages.length + ' 张图片' : '点击选择图片（2-10 张，按顺序）' }}</view>
+      </view>
+      <view class="file-list" wx:if="{{ mergeImages.length > 0 }}">
+        <view class="file-item" wx:for="{{ mergeImages }}" wx:key="index">
+          <text>{{ index + 1 }}. {{ item.name }}</text>
+        </view>
+      </view>
+      <view class="field">
+        <view class="field-label">拼接方向</view>
+        <view class="position-grid">
+          <view class="position-item {{ mergeDirection === 'vertical' ? 'active' : '' }}" data-dir="vertical" bindtap="onDirectionChange">竖向（长图）</view>
+          <view class="position-item {{ mergeDirection === 'horizontal' ? 'active' : '' }}" data-dir="horizontal" bindtap="onDirectionChange">横向（宽图）</view>
+        </view>
+      </view>
+      <button class="btn-primary" disabled="{{ mergeImages.length < 2 || loading }}" loading="{{ loading }}" bindtap="onSubmitMerge">拼接</button>
+    </view>
+  </block>
+
+  <!-- ========== PDF 合并 ========== -->
+  <block wx:if="{{ tool === 'pdf' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChoosePdf">
+        <view class="upload-icon">📋</view>
+        <view class="upload-text">{{ pdfFiles.length > 0 ? '已选 ' + pdfFiles.length + ' 个 PDF' : '点击选择 PDF（2-10 个）' }}</view>
+      </view>
+      <view class="file-list" wx:if="{{ pdfFiles.length > 0 }}">
+        <view class="file-item" wx:for="{{ pdfFiles }}" wx:key="index">
+          <text>{{ index + 1 }}. {{ item.name }}</text>
+        </view>
+      </view>
+      <button class="btn-primary" disabled="{{ pdfFiles.length < 2 || loading }}" loading="{{ loading }}" bindtap="onSubmitPdfMerge">合并 PDF</button>
+    </view>
+  </block>
+
+  <!-- ========== 网页摘要 ========== -->
+  <block wx:if="{{ tool === 'web' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="field">
+        <view class="field-label">网页 URL</view>
+        <input class="field-input" placeholder="https://..." value="{{ webUrl }}" bindinput="onWebUrlInput" />
+      </view>
+      <view class="notice">将抓取网页正文并用你的 AI Key 生成摘要</view>
+      <button class="btn-primary" disabled="{{ !webUrl || loading }}" loading="{{ loading }}" bindtap="onSubmitWeb">开始摘要</button>
+    </view>
+  </block>
+
+  <!-- ========== 结果区 ========== -->
+  <view class="card" wx:if="{{ result }}">
+    <!-- 单图结果 -->
+    <block wx:if="{{ result.type === 'image' }}">
+      <view class="result-title">✓ 处理完成</view>
+      <image class="result-image" src="{{ imgBaseUrl + result.url }}" mode="widthFix" />
+      <view class="result-meta">
+        <view wx:if="{{ result.saved_percent }}">节省 {{ result.saved_percent }}% 体积</view>
+        <view wx:if="{{ result.original_size }}">{{ result.original_size }} → {{ result.compressed_size }} 字节</view>
+        <view wx:if="{{ result.width }}">尺寸：{{ result.width }} × {{ result.height }}</view>
+      </view>
+      <button class="btn-secondary" bindtap="onSaveImage">保存到相册</button>
+    </block>
+
+    <!-- 多图结果（PDF 转图片） -->
+    <block wx:if="{{ result.type === 'images' }}">
+      <view class="result-title">✓ 转换完成（共 {{ result.total_pages }} 页，已显示 {{ result.converted }} 页）</view>
+      <image
+        wx:for="{{ result.images }}"
+        wx:key="filename"
+        class="result-image"
+        src="{{ imgBaseUrl + item.url }}"
+        mode="widthFix"
+      />
+    </block>
+
+    <!-- 文本结果 -->
+    <block wx:if="{{ result.type === 'text' }}">
+      <view class="result-title">✓ 处理完成</view>
+      <view class="result-text">{{ result.text }}</view>
+      <button class="btn-secondary" bindtap="onCopyText">复制内容</button>
+    </block>
+
+    <!-- PDF 文件结果 -->
+    <block wx:if="{{ result.type === 'pdf' }}">
+      <view class="result-title">✓ 生成完成</view>
+      <view class="result-meta">
+        <view wx:if="{{ result.file_count }}">共 {{ result.file_count }} 个文件</view>
+        <view wx:if="{{ result.image_count }}">共 {{ result.image_count }} 张图片</view>
+        <view wx:if="{{ result.total_size }}">总大小：{{ result.total_size }} 字节</view>
+      </view>
+      <button class="btn-secondary" bindtap="onCopyPdfUrl">复制下载链接</button>
+    </block>
+
+    <button class="btn-primary" bindtap="onReset">再做一次</button>
+  </view>
+
+</view>

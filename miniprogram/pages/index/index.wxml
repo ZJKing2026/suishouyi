@@ -1,0 +1,235 @@
+<view class="chat-page">
+
+  <view
+    class="mask {{ drawerOpen || attachPanelOpen || recording ? 'mask-show' : '' }}"
+    bindtap="closeAll"
+  ></view>
+
+  <!-- ========== 左侧抽屉 ========== -->
+  <view class="drawer {{ drawerOpen ? 'drawer-open' : '' }}">
+
+    <!-- 用户信息 -->
+    <view class="drawer-user" style="padding-top: {{ statusBarHeight + 20 }}px;">
+      <view class="user-avatar">{{ userInitial }}</view>
+      <view class="user-info">
+        <view class="user-nickname">{{ userNickname }}</view>
+        <view class="user-status">已登录 · 随手一下</view>
+      </view>
+    </view>
+
+    <!-- 新对话 -->
+    <view class="drawer-new-btn" bindtap="onNewChat">
+      <text class="new-icon">+</text>
+      <text class="new-text">新对话</text>
+    </view>
+
+    <!-- Tab 切换 -->
+    <view class="drawer-tabs">
+      <view
+        class="drawer-tab {{ drawerTab === 'sessions' ? 'drawer-tab-active' : '' }}"
+        data-tab="sessions"
+        bindtap="onSwitchTab"
+      >对话</view>
+      <view
+        class="drawer-tab {{ drawerTab === 'tasks' ? 'drawer-tab-active' : '' }}"
+        data-tab="tasks"
+        bindtap="onSwitchTab"
+      >任务</view>
+    </view>
+
+    <!-- 列表 -->
+    <scroll-view class="drawer-list" scroll-y>
+      <block wx:if="{{ drawerTab === 'sessions' }}">
+        <view
+          wx:for="{{ sessions }}"
+          wx:key="id"
+          class="drawer-item {{ item.id === sessionId ? 'drawer-item-active' : '' }}"
+          data-id="{{ item.id }}"
+          bindtap="onSelectSession"
+          bindlongpress="onLongPressSession"
+        >
+          <view class="drawer-item-title">{{ item.title }}</view>
+          <view class="drawer-item-time">{{ item.timeLabel }}</view>
+        </view>
+        <view class="drawer-empty" wx:if="{{ sessions.length === 0 }}">还没有对话</view>
+      </block>
+
+      <block wx:if="{{ drawerTab === 'tasks' }}">
+        <view
+          wx:for="{{ tasks }}"
+          wx:key="id"
+          class="drawer-item"
+          data-task="{{ item }}"
+          bindtap="onSelectTask"
+        >
+          <view class="drawer-item-row">
+            <view class="task-tag">{{ item.task_type }}</view>
+          </view>
+          <view class="drawer-item-title">{{ item.input_text }}</view>
+          <view class="drawer-item-time">{{ item.timeLabel }}</view>
+        </view>
+        <view class="drawer-empty" wx:if="{{ tasks.length === 0 }}">还没有任务记录</view>
+      </block>
+    </scroll-view>
+
+    <!-- 抽屉底部菜单 -->
+    <view class="drawer-footer" style="padding-bottom: {{ safeBottom }}px;">
+      <view class="drawer-footer-item" bindtap="onTapRag">
+        <text class="footer-icon">📚</text>
+        <text class="footer-text">知识库</text>
+        <text class="footer-arrow">›</text>
+      </view>
+      <view class="drawer-footer-item" bindtap="onTapToolbox">
+        <text class="footer-icon">🧰</text>
+        <text class="footer-text">工具箱</text>
+        <text class="footer-arrow">›</text>
+      </view>
+      <view class="drawer-footer-item" bindtap="onTapCareer">
+        <text class="footer-icon">💼</text>
+        <text class="footer-text">求职助手</text>
+        <text class="footer-arrow">›</text>
+      </view>
+      <view class="drawer-footer-item" bindtap="onTapNotes">
+        <text class="footer-icon">📝</text>
+        <text class="footer-text">我的笔记</text>
+        <text class="footer-arrow">›</text>
+      </view>
+      <view class="drawer-footer-item" bindtap="onTapTools">
+        <text class="footer-icon">🎯</text>
+        <text class="footer-text">AI 技能</text>
+        <text class="footer-arrow">›</text>
+      </view>
+      <view class="drawer-footer-item" bindtap="onTapMcp">
+        <text class="footer-icon">🔌</text>
+        <text class="footer-text">MCP 服务器</text>
+        <text class="footer-arrow">›</text>
+      </view>
+      <view class="drawer-footer-item" bindtap="onTapSettings">
+        <text class="footer-icon">🔧</text>
+        <text class="footer-text">设置</text>
+        <text class="footer-arrow">›</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ========== 主内容区 ========== -->
+  <view class="main">
+
+    <!-- 顶栏 -->
+    <view class="header" style="padding-top: {{ statusBarHeight }}px;">
+      <view class="header-left" bindtap="openDrawer">
+        <view class="hamburger">
+          <view class="line"></view>
+          <view class="line"></view>
+          <view class="line"></view>
+        </view>
+      </view>
+      <view class="header-title">{{ currentTitle }}</view>
+      <view class="header-right"></view>
+    </view>
+
+    <!-- 消息列表 -->
+    <scroll-view
+      class="msg-list"
+      scroll-y
+      scroll-with-animation
+      scroll-into-view="{{ scrollToId }}"
+    >
+      <view class="empty" wx:if="{{ messages.length === 0 }}">
+        <view class="empty-title">随手一下</view>
+        <view class="empty-sub">不知道怎么处理？丢给我就行。</view>
+        <view class="quick-tips">
+          <view class="quick-tip">💬 直接问我任何问题</view>
+          <view class="quick-tip">📎 点 + 上传图片 / 文件 / 录音</view>
+          <view class="quick-tip">📚 抽屉里有"知识库"和"工具箱"</view>
+        </view>
+      </view>
+
+      <view
+        wx:for="{{ messages }}"
+        wx:key="id"
+        id="msg-{{ item.id }}"
+        class="msg-row {{ item.role === 'user' ? 'row-user' : 'row-ai' }}"
+      >
+        <view class="bubble {{ item.role === 'user' ? 'bubble-user' : 'bubble-ai' }}">
+          <rich-text wx:if="{{ item.role === 'assistant' }}" nodes="{{ item.nodes }}"></rich-text>
+          <text wx:else>{{ item.content }}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{ sending }}" class="msg-row row-ai">
+        <view class="bubble bubble-ai">正在思考...</view>
+      </view>
+
+      <view style="height: 40rpx;"></view>
+    </scroll-view>
+
+    <!-- RAG 开关 -->
+    <view class="rag-bar">
+      <view class="rag-toggle" bindtap="onToggleRag">
+        <view class="rag-switch {{ ragEnabled ? 'rag-on' : '' }}">
+          <view class="rag-dot"></view>
+        </view>
+        <text class="rag-label">{{ ragEnabled ? '🔍 知识库已启用' : '📚 启用知识库' }}</text>
+      </view>
+      <view class="rag-docs" wx:if="{{ ragEnabled }}" bindtap="onGoRagDocs">
+        {{ ragDocCount }} 个文档 ›
+      </view>
+    </view>
+
+    <!-- 输入栏 -->
+    <view class="input-bar" style="padding-bottom: {{ safeBottom + 16 }}px;">
+      <view class="attach-btn" bindtap="openAttachPanel">
+        <text class="attach-icon">+</text>
+      </view>
+      <input
+        class="input"
+        placeholder="说点什么..."
+        value="{{ inputText }}"
+        bindinput="onInput"
+        bindconfirm="onSend"
+        confirm-type="send"
+        disabled="{{ sending }}"
+      />
+      <view
+        class="send-btn {{ (!inputText || sending) ? 'send-btn-disabled' : '' }}"
+        bindtap="onSend"
+      >发送</view>
+    </view>
+
+    <!-- 附件面板 -->
+    <view class="attach-panel {{ attachPanelOpen ? 'attach-panel-open' : '' }}">
+      <view class="attach-options">
+        <view class="attach-option" bindtap="onTapCamera">
+          <view class="attach-icon-big">📷</view>
+          <view class="attach-label">拍照</view>
+        </view>
+        <view class="attach-option" bindtap="onTapFile">
+          <view class="attach-icon-big">📄</view>
+          <view class="attach-label">文件</view>
+        </view>
+        <view class="attach-option" bindtap="onTapVoice">
+          <view class="attach-icon-big">🎙</view>
+          <view class="attach-label">语音输入</view>
+        </view>
+      </view>
+      <view class="attach-cancel" bindtap="closeAttachPanel">取消</view>
+    </view>
+
+  </view>
+
+  <!-- ========== 语音录制浮层 ========== -->
+  <view class="voice-overlay {{ recording ? 'voice-show' : '' }}" catchtouchmove="noop">
+    <view class="voice-content">
+      <view class="voice-icon">🎙</view>
+      <view class="voice-status">{{ voiceStatus }}</view>
+      <view class="voice-time">{{ voiceTimeText }}</view>
+      <view class="voice-buttons">
+        <view class="voice-btn voice-btn-cancel" bindtap="onCancelVoice">取消</view>
+        <view class="voice-btn voice-btn-stop" bindtap="onStopVoice">停止</view>
+      </view>
+    </view>
+  </view>
+
+</view>

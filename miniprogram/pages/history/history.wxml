@@ -1,0 +1,32 @@
+<view class="page">
+
+  <!-- 加载中 -->
+  <view class="empty" wx:if="{{ loading && tasks.length === 0 }}">加载中...</view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:elif="{{ tasks.length === 0 }}">
+    还没有任务，去首页丢一个试试
+  </view>
+
+  <!-- 任务列表 -->
+  <view wx:else>
+    <view
+      class="task-item"
+      wx:for="{{ tasks }}"
+      wx:key="id"
+    >
+      <view class="task-header">
+        <view class="task-tag">{{ item.task_type }}</view>
+        <view class="task-time">{{ item.created_at }}</view>
+      </view>
+      <view class="task-input">{{ item.input_text }}</view>
+      <view class="task-output" wx:if="{{ item.output_text }}">
+        {{ item.output_text }}
+      </view>
+    </view>
+
+    <!-- 到底了 -->
+    <view class="end-tip" wx:if="{{ noMore }}">— 到底了 —</view>
+  </view>
+
+</view>

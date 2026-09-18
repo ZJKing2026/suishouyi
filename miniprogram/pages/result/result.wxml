@@ -1,0 +1,24 @@
+<view class="page">
+
+  <!-- 输入信息 -->
+  <view class="card">
+    <view class="card-tag">{{ taskType }}</view>
+    <view class="card-title">输入</view>
+    <view class="card-content">{{ inputText }}</view>
+  </view>
+
+  <!-- 结果 -->
+  <view class="card">
+    <view class="card-title">AI 处理结果</view>
+    <scroll-view class="result-scroll" scroll-y>
+      <view class="result-text">{{ outputText }}</view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="btn-row">
+    <button class="btn-secondary" bindtap="onCopy">复制结果</button>
+    <button class="btn-primary" bindtap="onBack">返回首页</button>
+  </view>
+
+</view>

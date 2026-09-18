@@ -1,0 +1,70 @@
+<view class="page">
+
+  <view class="hero">
+    <view class="hero-title">求职助手</view>
+    <view class="hero-subtitle">AI 帮你准备投递材料</view>
+  </view>
+
+  <!-- Tab 切换 -->
+  <view class="tabs">
+    <view class="tab {{ tab === 'optimize' ? 'tab-active' : '' }}" data-tab="optimize" bindtap="onSwitchTab">简历优化</view>
+    <view class="tab {{ tab === 'match' ? 'tab-active' : '' }}" data-tab="match" bindtap="onSwitchTab">JD 匹配</view>
+    <view class="tab {{ tab === 'letter' ? 'tab-active' : '' }}" data-tab="letter" bindtap="onSwitchTab">求职信</view>
+  </view>
+
+  <!-- ========== 简历优化 ========== -->
+  <block wx:if="{{ tab === 'optimize' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChooseResume">
+        <view class="upload-icon">📄</view>
+        <view class="upload-text">{{ resumeFile ? '已选择：' + resumeFile.name : '点击上传简历（PDF/Word/TXT）' }}</view>
+      </view>
+      <button class="btn-primary" disabled="{{ !resumeFile || loading }}" loading="{{ loading }}" bindtap="onOptimize">开始分析</button>
+    </view>
+  </block>
+
+  <!-- ========== JD 匹配 ========== -->
+  <block wx:if="{{ tab === 'match' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChooseResume">
+        <view class="upload-icon">📄</view>
+        <view class="upload-text">{{ resumeFile ? '已选择：' + resumeFile.name : '点击上传简历' }}</view>
+      </view>
+      <view class="field">
+        <view class="field-label">粘贴 JD 内容</view>
+        <textarea class="field-textarea" placeholder="把招聘岗位描述粘贴到这里..." value="{{ jdText }}" bindinput="onJdInput" maxlength="5000" />
+      </view>
+      <button class="btn-primary" disabled="{{ !resumeFile || !jdText || loading }}" loading="{{ loading }}" bindtap="onMatch">开始匹配</button>
+    </view>
+  </block>
+
+  <!-- ========== 求职信 ========== -->
+  <block wx:if="{{ tab === 'letter' }}">
+    <view class="card" wx:if="{{ !result }}">
+      <view class="upload-area" bindtap="onChooseResume">
+        <view class="upload-icon">📄</view>
+        <view class="upload-text">{{ resumeFile ? '已选择：' + resumeFile.name : '点击上传简历' }}</view>
+      </view>
+      <view class="field">
+        <view class="field-label">公司名称</view>
+        <input class="field-input" placeholder="如：字节跳动" value="{{ company }}" bindinput="onCompanyInput" />
+      </view>
+      <view class="field">
+        <view class="field-label">JD 内容</view>
+        <textarea class="field-textarea" placeholder="粘贴招聘 JD..." value="{{ jdText }}" bindinput="onJdInput" maxlength="5000" />
+      </view>
+      <button class="btn-primary" disabled="{{ !resumeFile || !jdText || !company || loading }}" loading="{{ loading }}" bindtap="onLetter">生成求职信</button>
+    </view>
+  </block>
+
+  <!-- ========== 结果 ========== -->
+  <view class="card" wx:if="{{ result }}">
+    <view class="result-title">✓ 分析完成</view>
+    <view class="result-text">
+      <rich-text nodes="{{ resultNodes }}"></rich-text>
+    </view>
+    <button class="btn-secondary" bindtap="onCopyResult">复制结果</button>
+    <button class="btn-primary" bindtap="onReset">再试一次</button>
+  </view>
+
+</view>

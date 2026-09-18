@@ -1,0 +1,253 @@
+
+
+/* ========== 品牌卡 ========== */
+.brand-card {
+  background: var(--ink);
+  border-radius: var(--r-card);
+  padding: 60rpx 40rpx;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+.brand-logo {
+  font-size: 100rpx;
+  margin-bottom: 24rpx;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--surface);
+  margin-bottom: 12rpx;
+  letter-spacing: 4rpx;
+}
+
+.brand-version {
+  display: inline-block;
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6rpx 20rpx;
+  border-radius: var(--r-btn);
+  margin-bottom: 32rpx;
+}
+
+.brand-desc {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  text-align: left;
+  padding-top: 24rpx;
+  border-top: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== Section ========== */
+.section {
+  margin-bottom: 40rpx;
+}
+
+.section-title {
+  font-size: 26rpx;
+  color: var(--ink-faint);
+  font-weight: 500;
+  padding-left: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+/* ========== 功能列表 ========== */
+.feature-list {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+}
+
+.feature-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: var(--r-btn);
+  background: var(--bg);
+  font-size: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.feature-body {
+  flex: 1;
+}
+
+.feature-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6rpx;
+}
+
+.feature-desc {
+  font-size: 22rpx;
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
+/* ========== 技术栈 ========== */
+.tech-list {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  padding: 32rpx;
+}
+
+.tech-item {
+  padding: 16rpx 0;
+  border-bottom: 1rpx dashed var(--line);
+}
+
+.tech-item:last-child {
+  border-bottom: none;
+}
+
+.tech-name {
+  font-size: 26rpx;
+  color: var(--ink);
+  font-weight: 500;
+  font-family: monospace;
+  margin-bottom: 4rpx;
+}
+
+.tech-desc {
+  font-size: 22rpx;
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
+/* ========== 链接卡 ========== */
+.link-card {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border-radius: var(--r-card);
+  padding: 28rpx 32rpx;
+  margin-bottom: 16rpx;
+}
+
+.link-card:active {
+  background: var(--bg);
+}
+
+.link-icon {
+  font-size: 44rpx;
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.link-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.link-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6rpx;
+}
+
+.link-url {
+  font-size: 22rpx;
+  color: var(--ink-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: monospace;
+}
+
+.link-desc {
+  font-size: 22rpx;
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
+.link-action {
+  font-size: 24rpx;
+  color: var(--ink);
+  background: var(--bg-sunken);
+  padding: 8rpx 20rpx;
+  border-radius: var(--r-btn);
+  flex-shrink: 0;
+}
+
+.link-arrow {
+  font-size: 40rpx;
+  color: var(--ink-ghost);
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+/* ========== 反馈列表 ========== */
+.action-list {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 32rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.action-item:last-child {
+  border-bottom: none;
+}
+
+.action-item:active {
+  background: var(--bg);
+}
+
+.action-icon {
+  font-size: 36rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.action-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--ink);
+}
+
+.action-arrow {
+  font-size: 36rpx;
+  color: var(--ink-ghost);
+}
+
+/* ========== 底部 ========== */
+.footer {
+  text-align: center;
+  padding: 60rpx 0 40rpx;
+}
+
+.footer-line {
+  font-size: 22rpx;
+  color: var(--ink-ghost);
+  line-height: 1.8;
+}

@@ -1,0 +1,45 @@
+<view class="page">
+
+  <!-- 顶部说明 -->
+  <view class="hero">
+    <view class="hero-title">语音笔记</view>
+    <view class="hero-subtitle">录一段音，AI 自动整理成笔记</view>
+  </view>
+
+  <!-- 录音状态 -->
+  <view class="status">
+    <view class="status-time">{{ timeText }}</view>
+    <view class="status-hint">{{ statusHint }}</view>
+  </view>
+
+  <!-- 录音按钮 -->
+  <view class="record-area">
+    <view
+      class="record-btn {{ isRecording ? 'recording' : '' }}"
+      bindtap="onToggleRecord"
+    >
+      <view class="record-icon">{{ isRecording ? '■' : '🎙' }}</view>
+      <view class="record-text">{{ isRecording ? '停止' : '开始录音' }}</view>
+    </view>
+  </view>
+
+  <!-- 上传中 -->
+  <view class="uploading" wx:if="{{ uploading }}">
+    <view class="uploading-text">正在处理中，请稍候...</view>
+    <view class="uploading-sub">AI 转录 + 生成摘要，约需 10-60 秒</view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="tips" wx:if="{{ !isRecording && !uploading }}">
+    <view class="tip">· 点击开始录音，再点一次停止</view>
+    <view class="tip">· 录音结束后自动上传并生成笔记</view>
+    <view class="tip">· 支持最长 30 分钟</view>
+  </view>
+
+  <!-- 历史笔记入口 -->
+  <view class="history-entry" bindtap="onGoList">
+    <text>查看我的所有笔记</text>
+    <text class="arrow">›</text>
+  </view>
+
+</view>

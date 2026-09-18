@@ -1,0 +1,170 @@
+
+
+.section {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 32rpx;
+}
+
+.field {
+  margin-bottom: 32rpx;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field-label {
+  font-size: 26rpx;
+  color: var(--ink-soft);
+  font-weight: 500;
+  margin-bottom: 12rpx;
+}
+
+.field-input {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 0 28rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: var(--ink);
+}
+
+.field-textarea {
+  width: 100%;
+  min-height: 140rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 24rpx 28rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.field-textarea.code {
+  font-family: monospace;
+  font-size: 24rpx;
+}
+
+.field-hint {
+  font-size: 22rpx;
+  color: var(--ink-faint);
+  margin-top: 10rpx;
+  line-height: 1.5;
+}
+
+.picker {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 0 28rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.picker-arrow {
+  font-size: 24rpx;
+  color: var(--ink-faint);
+}
+
+/* 开关 */
+.switch-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  border-radius: var(--r-card);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.switch-label {
+  font-size: 28rpx;
+  color: var(--ink);
+}
+
+/* 测试按钮 */
+.btn-test {
+  background: var(--bg-sunken);
+  color: var(--ink);
+  font-size: 28rpx;
+  border-radius: var(--r-btn);
+  border: none;
+  padding: 20rpx 0;
+  margin-top: 16rpx;
+}
+
+.test-result {
+  margin-top: 32rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 24rpx;
+}
+
+.test-result-label {
+  font-size: 24rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.label-success { color: var(--ok); }
+.label-error { color: var(--danger); }
+
+.test-result-content {
+  font-size: 24rpx;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  word-break: break-all;
+  font-family: monospace;
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
+/* 提示 */
+.notice {
+  font-size: 24rpx;
+  color: var(--ink-faint);
+  padding: 24rpx 32rpx;
+  line-height: 1.6;
+}
+
+/* 底部按钮 */
+.btn-row {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 32rpx;
+  background: var(--surface);
+  border-top: 1rpx solid var(--line);
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 30rpx;
+  border-radius: var(--r-btn);
+  border: none;
+  padding: 26rpx 0;
+}
+
+.btn-primary[disabled] {
+  background: var(--ink-ghost);
+}

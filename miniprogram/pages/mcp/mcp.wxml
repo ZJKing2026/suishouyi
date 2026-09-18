@@ -1,0 +1,115 @@
+<view class="page">
+
+  <!-- 顶部标题 -->
+  <view class="hero">
+    <view class="hero-title">MCP 服务器</view>
+    <view class="hero-subtitle">接入 Anthropic 生态的工具</view>
+  </view>
+
+  <!-- 小提示条（可折叠） -->
+  <view class="hint-bar" bindtap="toggleIntro">
+    <view class="hint-left">
+      <text class="hint-icon">💡</text>
+      <text class="hint-text">MCP 是什么？</text>
+    </view>
+    <text class="hint-arrow {{ showIntro ? 'arrow-up' : '' }}">›</text>
+  </view>
+
+  <!-- 展开的说明 -->
+  <view class="intro-card {{ showIntro ? 'intro-show' : '' }}">
+    <view class="intro-line">· MCP 是 Anthropic 定义的"工具协议"标准</view>
+    <view class="intro-line">· 添加一个 Server URL，AI 就获得这个服务器的全部工具</view>
+    <view class="intro-line">· 常见：filesystem-mcp（文件操作）、browser-mcp（浏览网页）</view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="empty" wx:if="{{ loading }}">加载中...</view>
+
+  <!-- 空状态 -->
+  <view class="empty-card" wx:elif="{{ servers.length === 0 }}">
+    <view class="empty-icon">🔌</view>
+    <view class="empty-title">还没有 MCP 服务器</view>
+    <view class="empty-desc">添加一个 Server，AI 立刻拥有它的全部工具</view>
+    <view class="empty-btn" bindtap="onTapCreate">添加 MCP 服务器</view>
+  </view>
+
+  <!-- 列表 -->
+  <view wx:else class="server-list">
+    <view
+      wx:for="{{ servers }}"
+      wx:key="id"
+      class="server-item"
+      data-id="{{ item.id }}"
+      bindtap="onTapDetail"
+      bindlongpress="onLongPressServer"
+    >
+      <view class="server-header">
+        <view class="server-name">{{ item.name }}</view>
+        <view class="server-status {{ item.enabled ? 'status-on' : 'status-off' }}">
+          {{ item.enabled ? '已启用' : '已禁用' }}
+        </view>
+      </view>
+      <view class="server-url">{{ item.url }}</view>
+      <view class="server-footer">
+        <view class="server-tools">{{ item.tool_count }} 个工具</view>
+        <view class="server-refresh" catchtap="onRefresh" data-id="{{ item.id }}">刷新 ›</view>
+      </view>
+    </view>
+
+    <view class="tip">长按删除 · 点击查看工具</view>
+  </view>
+
+  <!-- FAB -->
+  <view class="fab" bindtap="onTapCreate">
+    <text class="fab-plus">+</text>
+  </view>
+
+  <!-- ========== 添加弹窗 ========== -->
+  <view class="modal-mask {{ modalOpen ? 'show' : '' }}" bindtap="closeModal"></view>
+  <view class="modal {{ modalOpen ? 'show' : '' }}">
+    <view class="modal-title">添加 MCP 服务器</view>
+    <view class="modal-sub">填写 MCP Server 的 HTTP 端点</view>
+
+    <view class="field">
+      <view class="field-label">名称</view>
+      <input class="field-input" placeholder="如：文件系统工具" value="{{ formName }}" bindinput="onNameInput" />
+    </view>
+
+    <view class="field">
+      <view class="field-label">URL</view>
+      <input class="field-input" placeholder="https://..." value="{{ formUrl }}" bindinput="onUrlInput" />
+    </view>
+
+    <view class="field">
+      <view class="field-label">Auth Token（可选）</view>
+      <input class="field-input" placeholder="留空则不鉴权" value="{{ formToken }}" bindinput="onTokenInput" />
+    </view>
+
+    <view class="modal-btns">
+      <view class="modal-btn modal-btn-cancel" bindtap="closeModal">取消</view>
+      <view class="modal-btn modal-btn-confirm" bindtap="confirmCreate">
+        {{ creating ? '连接中...' : '添加' }}
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 详情弹窗 ========== -->
+  <view class="modal-mask {{ detailOpen ? 'show' : '' }}" bindtap="closeDetail"></view>
+  <view class="modal modal-large {{ detailOpen ? 'show' : '' }}">
+    <view class="modal-title">{{ detailServer.name }}</view>
+    <view class="modal-sub">{{ detailServer.url }}</view>
+
+    <view class="detail-tools-title">包含 {{ detailServer.tools.length }} 个工具</view>
+    <scroll-view class="detail-tools" scroll-y>
+      <view class="detail-tool" wx:for="{{ detailServer.tools }}" wx:key="name">
+        <view class="detail-tool-name">{{ item.name }}</view>
+        <view class="detail-tool-desc">{{ item.description }}</view>
+      </view>
+    </scroll-view>
+
+    <view class="modal-btns">
+      <view class="modal-btn modal-btn-cancel" bindtap="closeDetail">关闭</view>
+    </view>
+  </view>
+
+</view>

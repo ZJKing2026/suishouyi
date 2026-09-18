@@ -1,0 +1,37 @@
+<view class="page">
+
+  <!-- 加载中 -->
+  <view class="empty" wx:if="{{ loading && notes.length === 0 }}">加载中...</view>
+
+  <!-- 空状态 -->
+  <view class="empty-card" wx:elif="{{ notes.length === 0 }}">
+    <view class="empty-title">还没有笔记</view>
+    <view class="empty-sub">去录一段音，AI 会自动整理成笔记</view>
+    <view class="empty-btn" bindtap="onTapRecord">开始录音</view>
+  </view>
+
+  <!-- 列表 -->
+  <view wx:else>
+    <view
+      wx:for="{{ notes }}"
+      wx:key="id"
+      class="note-item"
+      data-id="{{ item.id }}"
+      bindtap="onTapNote"
+      bindlongpress="onLongPressNote"
+    >
+      <view class="note-title">{{ item.title }}</view>
+      <view class="note-summary" wx:if="{{ item.summary }}">{{ item.summary }}</view>
+      <view class="note-footer">
+        <view class="note-tag">{{ item.audio_duration }}秒</view>
+        <view class="note-time">{{ item.timeLabel }}</view>
+      </view>
+    </view>
+
+    <view class="tip">长按笔记可删除</view>
+  </view>
+
+  <!-- 悬浮录音按钮（右下角） -->
+  <view class="fab" bindtap="onTapRecord">🎙</view>
+
+</view>

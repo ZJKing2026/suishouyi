@@ -1,0 +1,86 @@
+<view class="page">
+
+  <!-- 顶部品牌区 -->
+  <view class="brand-card">
+    <view class="brand-logo">⚡</view>
+    <view class="brand-name">随手一下</view>
+    <view class="brand-version">{{ version }}</view>
+    <view class="brand-desc">一个"什么都不用研究，直接丢给 AI 处理"的多模态 AI 助手</view>
+  </view>
+
+  <!-- 核心能力 -->
+  <view class="section">
+    <view class="section-title">核心能力</view>
+    <view class="feature-list">
+      <view class="feature-item" wx:for="{{ features }}" wx:key="name">
+        <view class="feature-icon">{{ item.icon }}</view>
+        <view class="feature-body">
+          <view class="feature-name">{{ item.name }}</view>
+          <view class="feature-desc">{{ item.desc }}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 技术栈 -->
+  <view class="section">
+    <view class="section-title">技术栈</view>
+    <view class="tech-list">
+      <view class="tech-item" wx:for="{{ techStack }}" wx:key="name">
+        <view class="tech-name">{{ item.name }}</view>
+        <view class="tech-desc">{{ item.desc }}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 开源 -->
+  <view class="section">
+    <view class="section-title">开源</view>
+    <view class="link-card" bindtap="onCopyGithub">
+      <view class="link-icon">🐙</view>
+      <view class="link-body">
+        <view class="link-title">GitHub 仓库</view>
+        <view class="link-url">{{ githubUrl }}</view>
+      </view>
+      <view class="link-action">复制</view>
+    </view>
+
+    <view class="link-card" bindtap="onOpenGithub">
+      <view class="link-icon">🌐</view>
+      <view class="link-body">
+        <view class="link-title">在浏览器打开</view>
+        <view class="link-desc">需要复制到浏览器访问（小程序不支持直接打开）</view>
+      </view>
+      <view class="link-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 反馈 -->
+  <view class="section">
+    <view class="section-title">反馈与贡献</view>
+    <view class="action-list">
+      <view class="action-item" bindtap="onCopyGithub">
+        <view class="action-icon">💡</view>
+        <view class="action-text">提 Issue 反馈问题</view>
+        <view class="action-arrow">›</view>
+      </view>
+      <view class="action-item" bindtap="onCopyGithub">
+        <view class="action-icon">🤝</view>
+        <view class="action-text">提 PR 贡献代码</view>
+        <view class="action-arrow">›</view>
+      </view>
+      <view class="action-item" bindtap="onCopyGithub">
+        <view class="action-icon">⭐</view>
+        <view class="action-text">给项目一个 Star</view>
+        <view class="action-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部 -->
+  <view class="footer">
+    <view class="footer-line">Made with ❤️ by 一个独立开发者</view>
+    <view class="footer-line">{{ version }} · Powered by FastAPI</view>
+  </view>
+
+</view>

@@ -1,0 +1,106 @@
+<view class="page">
+
+  <view class="hero">
+    <view class="hero-title">配置你的 AI</view>
+    <view class="hero-subtitle">使用你自己的 API Key 调用 AI</view>
+  </view>
+
+  <!-- ========== 文本 AI ========== -->
+  <view class="section-title">文本 AI</view>
+
+  <view class="field">
+    <view class="field-label">厂商</view>
+    <picker mode="selector" range="{{ providers }}" range-key="name" value="{{ providerIndex }}" bindchange="onProviderChange">
+      <view class="picker">{{ providers[providerIndex].name }}<text class="picker-arrow">▾</text></view>
+    </picker>
+    <view class="field-hint" bindtap="onOpenConsole" wx:if="{{ providers[providerIndex].console }}">复制官网去申请 Key →</view>
+  </view>
+
+  <view class="field">
+    <view class="field-label">API Key</view>
+    <input class="field-input" placeholder="sk-xxxxxxxx" value="{{ apiKey }}" bindinput="onKeyInput" />
+  </view>
+
+  <view class="field">
+    <view class="field-label">Base URL</view>
+    <input class="field-input" value="{{ baseUrl }}" bindinput="onBaseUrlInput" />
+  </view>
+
+  <view class="field">
+    <view class="field-label">模型名</view>
+    <input class="field-input" value="{{ llmModel }}" bindinput="onModelInput" />
+  </view>
+
+  <!-- ========== 视觉独立开关 ========== -->
+  <view class="switch-row">
+    <view class="switch-label">视觉模型使用相同配置</view>
+    <switch checked="{{ useSameForVision }}" bindchange="onToggleSameVision" color="#1a1a1a" />
+  </view>
+
+  <block wx:if="{{ !useSameForVision }}">
+    <view class="section-title">视觉 AI（独立）</view>
+    <view class="field">
+      <view class="field-label">厂商</view>
+      <picker mode="selector" range="{{ providers }}" range-key="name" value="{{ visionProviderIndex }}" bindchange="onVisionProviderChange">
+        <view class="picker">{{ providers[visionProviderIndex].name }}<text class="picker-arrow">▾</text></view>
+      </picker>
+    </view>
+    <view class="field">
+      <view class="field-label">API Key</view>
+      <input class="field-input" placeholder="sk-xxxxxxxx" value="{{ visionApiKey }}" bindinput="onVisionKeyInput" />
+    </view>
+    <view class="field">
+      <view class="field-label">Base URL</view>
+      <input class="field-input" value="{{ visionBaseUrl }}" bindinput="onVisionBaseUrlInput" />
+    </view>
+  </block>
+
+  <view class="field">
+    <view class="field-label">视觉模型名</view>
+    <input class="field-input" value="{{ visionModel }}" bindinput="onVisionModelInput" />
+  </view>
+
+  <!-- ========== 知识库 / RAG（可选） ========== -->
+  <view class="section-title">知识库（可选）</view>
+  <view class="notice">
+    如果你想使用「知识库」功能（上传文档 + 基于文档提问），需要配置 Embedding Key。
+    推荐使用免费的硅基流动（SiliconFlow）。
+  </view>
+
+  <view class="field">
+    <view class="field-label">Embedding Key（留空则不用知识库）</view>
+    <input class="field-input" placeholder="sk-xxxxxxxx" value="{{ embeddingApiKey }}" bindinput="onEmbeddingKeyInput" />
+    <view class="field-hint" bindtap="onOpenSiliconflow">去硅基流动申请（免费） →</view>
+  </view>
+
+  <view class="field">
+    <view class="field-label">Embedding Base URL</view>
+    <input class="field-input" value="{{ embeddingBaseUrl }}" bindinput="onEmbeddingBaseUrlInput" />
+  </view>
+
+  <view class="field">
+    <view class="field-label">Embedding 模型</view>
+    <input class="field-input" value="{{ embeddingModel }}" bindinput="onEmbeddingModelInput" />
+  </view>
+
+  <button class="btn-secondary" loading="{{ embeddingVerifying }}" disabled="{{ embeddingVerifying || !embeddingApiKey }}" bindtap="onVerifyEmbedding">
+    {{ embeddingVerifying ? '测试中...' : '测试 Embedding 连接' }}
+  </button>
+
+  <view class="status status-success" wx:if="{{ embeddingVerified }}">✓ {{ embeddingMsg }}</view>
+  <view class="status status-error" wx:if="{{ embeddingError }}">✗ {{ embeddingError }}</view>
+
+  <!-- ========== 保存 ========== -->
+  <view class="btn-row">
+    <button class="btn-secondary" loading="{{ verifying }}" disabled="{{ verifying || saving }}" bindtap="onVerify">
+      {{ verifying ? '测试中...' : '测试文本连接' }}
+    </button>
+    <button class="btn-primary" loading="{{ saving }}" disabled="{{ verifying || saving || !verified }}" bindtap="onSave">
+      {{ saving ? '保存中...' : '保存并开始' }}
+    </button>
+  </view>
+
+  <view class="status status-success" wx:if="{{ verified }}">✓ {{ verifyMsg }}</view>
+  <view class="status status-error" wx:if="{{ verifyError }}">✗ {{ verifyError }}</view>
+
+</view>

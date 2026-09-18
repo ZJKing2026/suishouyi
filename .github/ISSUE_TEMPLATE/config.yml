@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 使用问题 / 讨论
+    url: https://github.com/ZJKing2026/suishouyi/discussions
+    about: 不确定是不是 Bug、想聊聊思路，来这里

@@ -1,0 +1,127 @@
+<view class="page">
+
+  <!-- 基本信息 -->
+  <view class="section">
+    <view class="section-title">基本信息</view>
+
+    <view class="field">
+      <view class="field-label">工具名 *</view>
+      <input
+        class="field-input"
+        placeholder="如 get_quote（字母数字下划线）"
+        value="{{ name }}"
+        bindinput="onNameInput"
+      />
+      <view class="field-hint">AI 通过这个名字调用工具</view>
+    </view>
+
+    <view class="field">
+      <view class="field-label">描述 *</view>
+      <textarea
+        class="field-textarea"
+        placeholder="如：获取一句随机名言。当用户想要名言时调用。"
+        value="{{ description }}"
+        bindinput="onDescInput"
+        maxlength="200"
+      />
+      <view class="field-hint">告诉 AI 什么时候用这个工具（很重要）</view>
+    </view>
+  </view>
+
+  <!-- API 配置 -->
+  <view class="section">
+    <view class="section-title">API 配置</view>
+
+    <view class="field">
+      <view class="field-label">API 地址 *</view>
+      <input
+        class="field-input"
+        placeholder="https://api.example.com/quote"
+        value="{{ apiUrl }}"
+        bindinput="onUrlInput"
+      />
+      <view class="field-hint">可用 {参数名} 占位，如 https://api.com/user/{id}</view>
+    </view>
+
+    <view class="field">
+      <view class="field-label">请求方法</view>
+      <picker mode="selector" range="{{ methods }}" value="{{ methodIndex }}" bindchange="onMethodChange">
+        <view class="picker">
+          {{ apiMethod }}
+          <text class="picker-arrow">▾</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <view class="field-label">参数 Schema</view>
+      <textarea
+        class="field-textarea code"
+        value="{{ parametersSchema }}"
+        bindinput="onSchemaInput"
+      />
+      <view class="field-hint">JSON Schema 格式。无参数则保留默认值。</view>
+    </view>
+
+    <view class="field">
+      <view class="field-label">请求头 Headers</view>
+      <textarea
+        class="field-textarea code"
+        value="{{ headers }}"
+        bindinput="onHeadersInput"
+      />
+      <view class="field-hint">JSON 格式，如 {"Authorization":"Bearer xxx"}</view>
+    </view>
+  </view>
+
+  <!-- 启用状态 -->
+  <view class="switch-row">
+    <view class="switch-label">启用此工具</view>
+    <switch checked="{{ enabled }}" bindchange="onEnabledChange" color="#1a1a1a" />
+  </view>
+
+  <!-- 测试区（仅编辑模式显示） -->
+  <view class="section" wx:if="{{ isEdit }}">
+    <view class="section-title">测试工具</view>
+
+    <view class="field">
+      <view class="field-label">测试参数</view>
+      <textarea
+        class="field-textarea code"
+        value="{{ testArguments }}"
+        bindinput="onTestArgsInput"
+      />
+      <view class="field-hint">JSON 格式，如 {"city":"北京"}。无参数则填 {}</view>
+    </view>
+
+    <button
+      class="btn-test"
+      loading="{{ testing }}"
+      disabled="{{ testing }}"
+      bindtap="onTest"
+    >{{ testing ? '测试中...' : '测试执行' }}</button>
+
+    <view class="test-result" wx:if="{{ testResult }}">
+      <view class="test-result-label {{ testSuccess ? 'label-success' : 'label-error' }}">
+        {{ testSuccess ? '✓ 成功' : '✗ 失败' }}
+      </view>
+      <view class="test-result-content">{{ testResult }}</view>
+    </view>
+  </view>
+
+  <!-- 提示 -->
+  <view class="notice" wx:if="{{ !isEdit }}">
+    💡 提示：保存后工具会自动启用，AI 对话时会自动调用它。
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="btn-row">
+    <button
+      class="btn-primary"
+      loading="{{ saving }}"
+      disabled="{{ saving }}"
+      bindtap="onSave"
+    >{{ saving ? '保存中...' : (isEdit ? '保存修改' : '创建工具') }}</button>
+  </view>
+
+</view>

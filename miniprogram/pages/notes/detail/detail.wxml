@@ -1,0 +1,79 @@
+<view class="page" wx:if="{{ note }}">
+
+  <view class="title-section">
+    <input
+      class="title-input"
+      value="{{ note.title }}"
+      bindblur="onTitleBlur"
+      placeholder="无标题"
+    />
+    <view class="meta">
+      <text>{{ note.audio_duration }} 秒</text>
+      <text class="dot">·</text>
+      <text>{{ note.timeLabel }}</text>
+    </view>
+  </view>
+
+  <!-- 摘要 -->
+  <view class="section" wx:if="{{ note.summary }}">
+    <view class="section-label">摘要</view>
+    <view class="summary-content">
+      <rich-text nodes="{{ summaryNodes }}"></rich-text>
+    </view>
+  </view>
+
+  <!-- 关键点 -->
+  <view class="section" wx:if="{{ note.key_points }}">
+    <view class="section-label">关键点</view>
+    <view class="points-content">
+      <rich-text nodes="{{ keyPointsNodes }}"></rich-text>
+    </view>
+  </view>
+
+  <!-- 原文（可折叠） -->
+  <view class="section">
+    <view class="section-header" bindtap="toggleTranscript">
+      <view class="section-label">原文</view>
+      <view class="section-toggle">{{ showTranscript ? '收起' : '展开' }} ›</view>
+    </view>
+    <view class="transcript-content" wx:if="{{ showTranscript }}">
+      {{ note.transcript }}
+    </view>
+    <view class="transcript-collapsed" wx:else>
+      {{ note.transcript ? note.transcript.slice(0, 80) + '...' : '（无内容）' }}
+    </view>
+  </view>
+
+  <view class="status-hint" wx:if="{{ note.status !== 'done' }}">
+    处理中... 当前状态：{{ note.status }}
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="actions">
+    <view class="action-item" bindtap="onCopyText">
+      <view class="action-icon">📋</view>
+      <view class="action-label">复制原文</view>
+    </view>
+    <view class="action-item" bindtap="onCopyMarkdown">
+      <view class="action-icon">📄</view>
+      <view class="action-label">复制 MD</view>
+    </view>
+    <view class="action-item" bindtap="onSaveImage">
+      <view class="action-icon">🖼</view>
+      <view class="action-label">保存图片</view>
+    </view>
+    <view class="action-item" bindtap="onShareNote">
+      <view class="action-icon">🔗</view>
+      <view class="action-label">分享</view>
+    </view>
+  </view>
+
+  <canvas
+    canvas-id="noteCanvas"
+    class="hidden-canvas"
+    style="width: 750px; height: 1000px;"
+  ></canvas>
+
+</view>
+
+<view class="loading" wx:else>加载中...</view>

@@ -1,0 +1,72 @@
+<view class="page">
+
+  <!-- 顶部标题 -->
+  <view class="hero">
+    <view class="hero-title">知识库</view>
+    <view class="hero-subtitle">上传文档，AI 对话时自动检索</view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{ !loading && documents.length === 0 }}">
+    <view class="empty-icon">📚</view>
+    <view class="empty-title">知识库还是空的</view>
+    <view class="empty-desc">上传一份简历、合同或资料\nAI 就能基于它回答你的问题</view>
+    <view class="empty-btn" bindtap="onChooseFile">上传第一份文档</view>
+  </view>
+
+  <!-- 有文档时 -->
+  <block wx:else>
+    <!-- 统计卡 -->
+    <view class="stat-card">
+      <view class="stat-item">
+        <view class="stat-num">{{ documents.length }}</view>
+        <view class="stat-label">份文档</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-num">{{ totalChunks }}</view>
+        <view class="stat-label">个知识片段</view>
+      </view>
+    </view>
+
+    <!-- 使用提示 -->
+    <view class="tip-bar">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">在「AI 对话」里打开知识库开关，AI 会自动检索</text>
+    </view>
+
+    <!-- 文档列表 -->
+    <view class="section-title">
+      <text>我的文档</text>
+    </view>
+
+    <view class="doc-list">
+      <view
+        wx:for="{{ documents }}"
+        wx:key="id"
+        class="doc-item"
+        data-id="{{ item.id }}"
+        bindlongpress="onDeleteDoc"
+      >
+        <view class="doc-icon">
+          <text class="doc-icon-inner">📄</text>
+        </view>
+        <view class="doc-info">
+          <view class="doc-name">{{ item.filename }}</view>
+          <view class="doc-meta">
+            <text class="doc-tag">{{ item.chunk_count }} 片段</text>
+            <text class="doc-status status-{{ item.status }}">{{ item.status === 'done' ? '✓ 已索引' : item.status }}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="list-footer">长按文档可删除</view>
+  </block>
+
+  <!-- 悬浮上传按钮 -->
+  <view class="fab" bindtap="onChooseFile">
+    <text class="fab-plus">+</text>
+  </view>
+
+</view>

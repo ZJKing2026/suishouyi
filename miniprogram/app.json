@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/profile/profile",
+    "pages/about/about",
+    "pages/setup/setup",
+    "pages/result/result",
+    "pages/tools/tools",
+    "pages/tools/edit/edit",
+    "pages/tools/import/import",
+    "pages/notes/record/record",
+    "pages/notes/list/list",
+    "pages/notes/detail/detail",
+    "pages/toolbox/toolbox",
+    "pages/toolbox/run/run",
+    "pages/career/career",
+    "pages/rag/rag",
+    "pages/mcp/mcp"
+  ],
+  "window": {
+    "navigationBarTitleText": "随手一下",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black"
+  }
+}

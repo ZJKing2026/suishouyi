@@ -1,0 +1,61 @@
+name: Bug 报告
+description: 报告一个可复现的问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请尽量填完整，信息越全排查越快。
+        **注意：不要贴出你的 API Key。**
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 问题描述
+      description: 发生了什么？你期望发生什么？
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开设置页
+        2. 填入 API Key
+        3. 点击保存
+        4. 出现报错
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 错误日志或截图
+      description: 后端控制台输出、小程序报错、或截图
+      render: shell
+  - type: input
+    id: os
+    attributes:
+      label: 操作系统
+      placeholder: Windows 11 / macOS 14 / Ubuntu 22.04
+  - type: input
+    id: python
+    attributes:
+      label: Python 版本
+      placeholder: "3.11.5"
+  - type: dropdown
+    id: area
+    attributes:
+      label: 涉及范围
+      multiple: true
+      options:
+        - 后端 - 对话/Agent
+        - 后端 - 语音转录
+        - 后端 - 图片/视觉
+        - 后端 - 文件解析
+        - 后端 - 知识库 RAG
+        - 后端 - 工具/MCP
+        - 后端 - 笔记
+        - 后端 - 求职助手
+        - 小程序 - 界面/交互
+        - 部署/配置
+        - 其他

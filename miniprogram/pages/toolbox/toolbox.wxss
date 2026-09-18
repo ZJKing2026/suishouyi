@@ -1,0 +1,69 @@
+
+
+.hero { margin-bottom: 48rpx; }
+
+.hero-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12rpx;
+}
+
+.hero-subtitle {
+  font-size: 26rpx;
+  color: var(--ink-faint);
+}
+
+.tool-list {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+
+.tool-card {
+  display: flex;
+  align-items: center;
+  padding: 36rpx 32rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.tool-card:last-child {
+  border-bottom: none;
+}
+
+.tool-card:active {
+  background: var(--bg);
+}
+
+.tool-icon {
+  font-size: 56rpx;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: var(--r-btn);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.tool-content { flex: 1; }
+
+.tool-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 8rpx;
+}
+
+.tool-desc {
+  font-size: 24rpx;
+  color: var(--ink-faint);
+}
+
+.tool-arrow {
+  font-size: 40rpx;
+  color: var(--ink-ghost);
+  margin-left: 20rpx;
+}

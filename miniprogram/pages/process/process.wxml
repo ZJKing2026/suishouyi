@@ -1,0 +1,36 @@
+<view class="page">
+
+  <!-- 输入区 -->
+  <view class="section">
+    <view class="section-title">丢点什么给我？</view>
+    <textarea
+      class="input"
+      placeholder="粘贴文字、提出问题、让我总结..."
+      value="{{ inputText }}"
+      bindinput="onInput"
+      maxlength="5000"
+      auto-height
+    />
+    <view class="btn-row">
+      <button
+        class="btn-primary"
+        loading="{{ loading }}"
+        disabled="{{ loading || !inputText }}"
+        bindtap="onSubmit"
+      >{{ loading ? '处理中...' : '丢给 AI' }}</button>
+    </view>
+  </view>
+
+  <!-- 处理步骤区（loading 时显示） -->
+  <view class="section" wx:if="{{ loading }}">
+    <view class="step">◐ 正在识别意图...</view>
+    <view class="step">◐ 正在调用 AI...</view>
+  </view>
+
+  <!-- 结果区 -->
+  <view class="section" wx:if="{{ result }}">
+    <view class="result-tag">{{ taskType }}</view>
+    <view class="result-content">{{ result }}</view>
+  </view>
+
+</view>

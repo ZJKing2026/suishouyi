@@ -1,0 +1,61 @@
+
+
+.empty {
+  text-align: center;
+  color: var(--ink-ghost);
+  font-size: 28rpx;
+  padding: 200rpx 0;
+}
+
+.task-item {
+  padding: 32rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.task-tag {
+  display: inline-block;
+  font-size: 22rpx;
+  color: var(--ink-muted);
+  background: var(--bg-sunken);
+  padding: 6rpx 16rpx;
+  border-radius: var(--r-sm);
+}
+
+.task-time {
+  font-size: 22rpx;
+  color: var(--ink-ghost);
+}
+
+.task-input {
+  font-size: 28rpx;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+}
+
+.task-output {
+  font-size: 26rpx;
+  color: var(--ink-muted);
+  line-height: 1.6;
+  background: var(--bg);
+  border-radius: var(--r-sm);
+  padding: 20rpx;
+}
+
+.end-tip {
+  text-align: center;
+  color: var(--ink-ghost);
+  font-size: 24rpx;
+  padding: 40rpx 0;
+}

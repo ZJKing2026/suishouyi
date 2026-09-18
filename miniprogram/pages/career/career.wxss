@@ -1,0 +1,108 @@
+
+
+.hero { margin-bottom: 40rpx; }
+.hero-title { font-size: 42rpx; font-weight: 700; color: var(--ink); margin-bottom: 12rpx; }
+.hero-subtitle { font-size: 26rpx; color: var(--ink-faint); }
+
+.tabs {
+  display: flex;
+  background: var(--surface);
+  border-radius: var(--r-btn);
+  padding: 6rpx;
+  margin-bottom: 32rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 26rpx;
+  color: var(--ink-muted);
+  border-radius: var(--r-sm);
+}
+
+.tab-active { background: var(--ink); color: var(--surface); font-weight: 500; }
+
+.card {
+  background: var(--surface);
+  border-radius: var(--r-card);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx 32rpx;
+  border: 2rpx dashed var(--ink-ghost);
+  border-radius: var(--r-btn);
+  background: var(--bg);
+  margin-bottom: 32rpx;
+}
+
+.upload-icon { font-size: 64rpx; margin-bottom: 16rpx; }
+.upload-text { font-size: 26rpx; color: var(--ink-muted); text-align: center; }
+
+.field { margin-bottom: 28rpx; }
+.field-label { font-size: 26rpx; color: var(--ink-soft); margin-bottom: 12rpx; }
+
+.field-input {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 0 24rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+}
+
+.field-textarea {
+  width: 100%;
+  min-height: 240rpx;
+  background: var(--bg);
+  border-radius: var(--r-btn);
+  padding: 24rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+.btn-primary {
+  width: 100%;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 30rpx;
+  border-radius: var(--r-btn);
+  border: none;
+  padding: 26rpx 0;
+  margin-top: 16rpx;
+}
+
+.btn-primary[disabled] { background: var(--ink-ghost); }
+
+.btn-secondary {
+  width: 100%;
+  background: var(--bg-sunken);
+  color: var(--ink);
+  font-size: 28rpx;
+  border-radius: var(--r-btn);
+  border: none;
+  padding: 24rpx 0;
+  margin-top: 20rpx;
+}
+
+.result-title { font-size: 32rpx; font-weight: 600; color: var(--ok); margin-bottom: 24rpx; }
+
+.result-text {
+  font-size: 28rpx;
+  color: var(--ink-soft);
+  line-height: 1.8;
+  background: var(--bg);
+  padding: 24rpx;
+  border-radius: var(--r-btn);
+  margin-bottom: 16rpx;
+  max-height: 1200rpx;
+  overflow-y: auto;
+}

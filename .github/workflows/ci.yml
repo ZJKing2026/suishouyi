@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend:
+    name: 后端检查
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: 安装依赖
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 语法检查
+        working-directory: backend
+        run: python -m compileall -q app
+
+      - name: 应用可正常加载
+        working-directory: backend
+        env:
+          AI_MOCK: "true"
+          JWT_SECRET: ci-test-secret-not-for-production
+          DATABASE_URL: "sqlite:///./ci_test.db"
+        run: |
+          python -c "
+          from app.main import app
+          spec = app.openapi()
+          print(f'端点数量: {len(spec[\"paths\"])}')
+          assert len(spec['paths']) > 30, '端点数量异常，路由可能未正确注册'
+          "
+
+  miniprogram:
+    name: 小程序配置检查
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 校验 JSON 配置
+        run: |
+          for f in miniprogram/app.json miniprogram/project.config.json; do
+            echo "检查 $f"
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))"
+          done
+          for f in $(find miniprogram/pages -name '*.json'); do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || exit 1
+          done
+
+      - name: JS 语法检查
+        run: |
+          fail=0
+          for f in $(find miniprogram -name '*.js' -not -path '*/node_modules/*'); do
+            node --check "$f" || { echo "语法错误: $f"; fail=1; }
+          done
+          exit $fail

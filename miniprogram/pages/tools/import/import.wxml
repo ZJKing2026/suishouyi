@@ -1,0 +1,168 @@
+<view class="page">
+
+  <!-- 头部 -->
+  <view class="hero">
+    <view class="hero-title">一键导入工具</view>
+    <view class="hero-subtitle">把 API 文档变成 AI 能用的工具</view>
+  </view>
+
+  <!-- ========== 第 1 步：选导入方式 ========== -->
+  <block wx:if="{{ step === 'choose' }}">
+    <!-- 主推卡片 -->
+    <view class="method-card method-primary" bindtap="onPickDemo">
+      <view class="method-icon-primary">🎁</view>
+      <view class="method-body">
+        <view class="method-title">试试看</view>
+        <view class="method-desc">用宠物商店演示，一键体验</view>
+      </view>
+      <view class="method-arrow-primary">›</view>
+    </view>
+
+    <!-- 次要选项 -->
+    <view class="method-card" bindtap="onPickUrl">
+      <view class="method-icon">🔗</view>
+      <view class="method-body">
+        <view class="method-title">我有文档链接</view>
+        <view class="method-desc">粘贴网址，系统自动下载</view>
+      </view>
+      <view class="method-arrow">›</view>
+    </view>
+
+    <view class="method-card" bindtap="onPickText">
+      <view class="method-icon">📋</view>
+      <view class="method-body">
+        <view class="method-title">我有文档内容</view>
+        <view class="method-desc">从别处复制的一段 JSON</view>
+      </view>
+      <view class="method-arrow">›</view>
+    </view>
+
+    <!-- 折叠小提示 -->
+    <view class="hint-bar" bindtap="toggleIntro">
+      <view class="hint-left">
+        <text class="hint-icon">💡</text>
+        <text class="hint-text">什么是 OpenAPI？</text>
+      </view>
+      <text class="hint-arrow {{ showIntro ? 'arrow-up' : '' }}">›</text>
+    </view>
+
+    <view class="intro-card {{ showIntro ? 'intro-show' : '' }}">
+      <view class="intro-line">· 一份描述"网站有哪些功能"的说明文件</view>
+      <view class="intro-line">· 常见网址后缀：/openapi.json 或 /swagger.json</view>
+      <view class="intro-line">· 也可以直接问 AI："这个网站有 OpenAPI 文档吗？"</view>
+    </view>
+  </block>
+
+  <!-- ========== 第 2 步：填内容 ========== -->
+  <block wx:if="{{ step === 'fill' }}">
+    <view class="back-row" bindtap="onBackToChoose">
+      <text class="back-arrow">←</text>
+      <text class="back-text">返回重选</text>
+    </view>
+
+    <block wx:if="{{ method === 'demo' }}">
+      <view class="current-method">
+        <view class="current-icon">🎁</view>
+        <view class="current-title">Petstore 演示</view>
+        <view class="current-desc">宠物商店公开文档，包含 19 个接口</view>
+      </view>
+      <button class="btn-primary" loading="{{ parsing }}" bindtap="onParseDemo">
+        {{ parsing ? '正在加载...' : '加载演示' }}
+      </button>
+    </block>
+
+    <block wx:if="{{ method === 'url' }}">
+      <view class="current-method">
+        <view class="current-icon">🔗</view>
+        <view class="current-title">文档链接</view>
+        <view class="current-desc">粘贴一个能下载到 JSON 的网址</view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">文档网址</view>
+        <input
+          class="field-input"
+          placeholder="https://example.com/openapi.json"
+          value="{{ urlContent }}"
+          bindinput="onUrlInput"
+        />
+        <view class="field-hint">常见后缀：/openapi.json、/swagger.json</view>
+      </view>
+
+      <button class="btn-primary" loading="{{ parsing }}" disabled="{{ !urlContent }}" bindtap="onParseUrl">
+        {{ parsing ? '加载中...' : '下一步' }}
+      </button>
+    </block>
+
+    <block wx:if="{{ method === 'text' }}">
+      <view class="current-method">
+        <view class="current-icon">📋</view>
+        <view class="current-title">文档内容</view>
+        <view class="current-desc">把从别处复制的 JSON 粘到这里</view>
+      </view>
+
+      <view class="field">
+        <view class="field-label">JSON 内容</view>
+        <textarea
+          class="field-textarea code"
+          placeholder='{"openapi":"3.0.0","paths":{...}}'
+          value="{{ jsonContent }}"
+          bindinput="onJsonInput"
+          maxlength="200000"
+        />
+      </view>
+
+      <button class="btn-primary" loading="{{ parsing }}" disabled="{{ !jsonContent }}" bindtap="onParseText">
+        {{ parsing ? '解析中...' : '下一步' }}
+      </button>
+    </block>
+  </block>
+
+  <!-- ========== 第 3 步：预览并导入 ========== -->
+  <block wx:if="{{ step === 'preview' }}">
+    <view class="result-card">
+      <view class="result-header">
+        <view class="result-icon">✓</view>
+        <view class="result-title">解析成功</view>
+      </view>
+
+      <view class="result-count">
+        找到 <text class="count-num">{{ parsedTools.length }}</text> 个工具
+      </view>
+
+      <view class="field" style="margin-top: 32rpx;">
+        <view class="field-label">给这些工具起个分类名（可选）</view>
+        <input
+          class="field-input"
+          placeholder="如：宠物、天气、公司内部"
+          value="{{ prefix }}"
+          bindinput="onPrefixInput"
+        />
+        <view class="field-hint">用于避免和其他工具重名</view>
+      </view>
+
+      <view class="preview-label">工具列表（前 5 个）</view>
+      <scroll-view class="tools-list" scroll-y>
+        <view class="tool-preview" wx:for="{{ parsedToolsPreview }}" wx:key="name">
+          <view class="tool-preview-header">
+            <view class="tool-name">{{ prefix }}{{ item.name }}</view>
+            <view class="tool-method method-{{ item.api_method }}">{{ item.api_method }}</view>
+          </view>
+          <view class="tool-desc">{{ item.description }}</view>
+        </view>
+      </scroll-view>
+
+      <view class="more-hint" wx:if="{{ parsedTools.length > 5 }}">
+        ... 还有 {{ parsedTools.length - 5 }} 个
+      </view>
+
+      <view class="preview-actions">
+        <view class="btn-ghost" bindtap="onBackToChoose">取消</view>
+        <view class="btn-solid" loading="{{ importing }}" bindtap="onImport">
+          {{ importing ? '导入中...' : '全部导入' }}
+        </view>
+      </view>
+    </view>
+  </block>
+
+</view>
