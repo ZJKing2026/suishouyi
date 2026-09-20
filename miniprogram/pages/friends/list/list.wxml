@@ -1,0 +1,45 @@
+<view class="page">
+
+  <view class="hero">
+    <view class="hero-title">我的好友</view>
+    <view class="hero-subtitle">加好友后，可以让 AI 帮你们传话</view>
+  </view>
+
+  <!-- 邀请 + 输入邀请码 -->
+  <view class="action-row">
+    <view class="action-btn" bindtap="onInvite">
+      <text class="action-icon">📤</text>
+      <text class="action-text">邀请好友</text>
+    </view>
+    <view class="action-btn" bindtap="onGoAccept">
+      <text class="action-icon">📥</text>
+      <text class="action-text">输入邀请码</text>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{ loading }}">加载中...</view>
+
+  <view class="empty-card" wx:elif="{{ friends.length === 0 }}">
+    <view class="empty-icon">👥</view>
+    <view class="empty-title">还没有好友</view>
+    <view class="empty-desc">点上方"邀请好友"生成邀请码\n或者点"输入邀请码"接受好友的邀请</view>
+  </view>
+
+  <view wx:else class="friend-list">
+    <view
+      class="friend-item"
+      wx:for="{{ friends }}"
+      wx:key="id"
+      data-id="{{ item.friend_id }}"
+      data-name="{{ item.nickname }}"
+      bindtap="onTapFriend"
+    >
+      <view class="avatar">{{ item.nickname[0] }}</view>
+      <view class="info">
+        <view class="name">{{ item.nickname }}</view>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+  </view>
+
+</view>

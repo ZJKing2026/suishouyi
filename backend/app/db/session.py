@@ -24,3 +24,27 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+# 5. 给老库补上后加的列
+def ensure_columns():
+    """
+    补齐已有表缺失的字段。
+
+    SQLite 的 create_all 只建新表，不改已有表结构，新增列要在这里手动补，
+    否则老部署升级后启动就会因为缺列报错。
+    """
+    from sqlalchemy import inspect, text
+
+    inspector = inspect(engine)
+    if "user_messages" not in inspector.get_table_names():
+        return
+
+    cols = {c["name"] for c in inspector.get_columns("user_messages")}
+    if "task_id" not in cols:
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE user_messages ADD COLUMN task_id INTEGER"))
+            conn.execute(text(
+                "CREATE INDEX IF NOT EXISTS ix_user_messages_task_id ON user_messages (task_id)"
+            ))
+        print("🔧 user_messages.task_id 已补齐")

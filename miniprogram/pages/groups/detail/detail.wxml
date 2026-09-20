@@ -1,0 +1,74 @@
+<view class="page">
+
+  <!-- 群信息条 -->
+  <view class="group-bar">
+    <view class="bar-main">
+      <view class="bar-name text-ellipsis">{{ group.name }}</view>
+      <view class="bar-count">{{ members.length }} 位成员</view>
+    </view>
+    <view class="bar-actions">
+      <view class="bar-btn tappable" bindtap="onStartDiscussion">
+        <text class="bar-btn-icon">🤖</text>
+        <text wx:if="{{ aiRunning }}">讨论中</text>
+        <text wx:else>AI 讨论</text>
+      </view>
+      <view class="bar-btn tappable" wx:if="{{ isOwner }}" bindtap="onOpenInvite">
+        <text class="bar-btn-icon">＋</text>
+        <text>邀请好友</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 消息区 -->
+  <scroll-view class="msg-list" scroll-y scroll-into-view="{{ scrollToId }}">
+    <view class="empty" wx:if="{{ messages.length === 0 }}">还没有消息，说点什么吧</view>
+    <view wx:for="{{ messages }}" wx:key="id" id="msg-{{ item.id }}" class="msg-row">
+      <view class="avatar">{{ item.from_nickname[0] }}</view>
+      <view class="msg-body">
+        <view class="nickname">{{ item.from_nickname }}<text class="ai-tag" wx:if="{{ item.from_ai }}"> · AI 代发</text></view>
+        <view class="bubble">{{ item.content }}</view>
+      </view>
+    </view>
+    <view style="height: 40rpx;"></view>
+  </scroll-view>
+
+  <!-- 输入栏 -->
+  <view class="input-bar">
+    <input class="input" placeholder="说点什么..." value="{{ inputText }}" bindinput="onInput" bindconfirm="onSend" confirm-type="send" />
+    <view class="ai-toggle tappable {{ useAI ? 'ai-on' : '' }}" bindtap="onToggleAI">🤖</view>
+    <view class="send-btn tappable" bindtap="onSend">发送</view>
+  </view>
+
+  <!-- 邀请好友弹层 -->
+  <view class="mask" wx:if="{{ showInvite }}" bindtap="onCloseInvite">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <view class="sheet-title">邀请好友进群</view>
+        <view class="sheet-close tappable" bindtap="onCloseInvite">✕</view>
+      </view>
+
+      <scroll-view class="sheet-body" scroll-y>
+        <view
+          class="pick-item tappable"
+          wx:for="{{ selectable }}"
+          wx:key="friend_id"
+          data-id="{{ item.friend_id }}"
+          bindtap="onToggleSelect"
+        >
+          <view class="pick-avatar">{{ item.nickname[0] }}</view>
+          <view class="pick-name text-ellipsis">{{ item.nickname }}</view>
+          <view class="pick-check {{ selected[item.friend_id] ? 'checked' : '' }}">
+            <text wx:if="{{ selected[item.friend_id] }}">✓</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="sheet-foot">
+        <view class="sheet-btn tappable" bindtap="onConfirmInvite">
+          确定{{ selectedCount > 0 ? '（' + selectedCount + '）' : '' }}
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

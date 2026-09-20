@@ -15,7 +15,12 @@
     "pages/toolbox/run/run",
     "pages/career/career",
     "pages/rag/rag",
-    "pages/mcp/mcp"
+    "pages/mcp/mcp",
+    "pages/friends/list/list",
+    "pages/friends/accept/accept",
+    "pages/friends/chat/chat",
+    "pages/groups/list/list",
+    "pages/groups/detail/detail"
   ],
   "window": {
     "navigationBarTitleText": "随手一下",

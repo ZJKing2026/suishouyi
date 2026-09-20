@@ -94,6 +94,16 @@
         <text class="footer-text">我的笔记</text>
         <text class="footer-arrow">›</text>
       </view>
+      <view class="drawer-footer-item" bindtap="onTapFriends">
+        <text class="footer-icon">👥</text>
+        <text class="footer-text">我的好友</text>
+        <text class="footer-arrow">›</text>
+      </view>
+      <view class="drawer-footer-item" bindtap="onTapGroups">
+        <text class="footer-icon">💬</text>
+        <text class="footer-text">群聊</text>
+        <text class="footer-arrow">›</text>
+      </view>
       <view class="drawer-footer-item" bindtap="onTapTools">
         <text class="footer-icon">🎯</text>
         <text class="footer-text">AI 技能</text>
@@ -129,6 +139,48 @@
       <view class="header-right"></view>
     </view>
 
+    <!-- AI 请示卡片：AI 拿不定主意时在这里等你拍板 -->
+    <view class="req-list" wx:if="{{ pendingRequests.length > 0 }}">
+      <view class="req-card" wx:for="{{ pendingRequests }}" wx:key="id">
+        <view class="req-head">
+          <text class="req-title">🤖 AI 需要你决策</text>
+          <text class="req-from">{{ item.asker_nickname }} 问</text>
+        </view>
+
+        <view class="req-question">{{ item.question }}</view>
+
+        <view class="req-context" wx:if="{{ item.context }}">
+          <text class="req-context-text">{{ item.context }}</text>
+        </view>
+
+        <view class="req-suggest" wx:if="{{ item.suggestion }}">
+          <text class="req-suggest-label">AI 建议</text>
+          <text class="req-suggest-text">{{ item.suggestion }}</text>
+        </view>
+
+        <view class="req-actions">
+          <view
+            class="req-btn req-btn-primary"
+            data-id="{{ item.id }}"
+            data-action="approve"
+            bindtap="onRequestResolve"
+          >按建议回复</view>
+          <view
+            class="req-btn"
+            data-id="{{ item.id }}"
+            data-action="custom"
+            bindtap="onRequestResolve"
+          >自定义</view>
+          <view
+            class="req-btn req-btn-ghost"
+            data-id="{{ item.id }}"
+            data-action="reject"
+            bindtap="onRequestResolve"
+          >拒绝</view>
+        </view>
+      </view>
+    </view>
+
     <!-- 消息列表 -->
     <scroll-view
       class="msg-list"
@@ -142,7 +194,7 @@
         <view class="quick-tips">
           <view class="quick-tip">💬 直接问我任何问题</view>
           <view class="quick-tip">📎 点 + 上传图片 / 文件 / 录音</view>
-          <view class="quick-tip">📚 抽屉里有"知识库"和"工具箱"</view>
+          <view class="quick-tip">👥 抽屉里可以加好友、群聊</view>
         </view>
       </view>
 

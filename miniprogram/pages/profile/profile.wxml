@@ -2,9 +2,16 @@
 
   <!-- 用户信息 -->
   <view class="hero">
-    <view class="avatar">{{ userInitial }}</view>
+    <view class="avatar-wrap" bindtap="onTapAvatar">
+      <image wx:if="{{ avatarUrl }}" class="avatar-img" src="{{ avatarUrl }}" mode="aspectFill" />
+      <view wx:else class="avatar">{{ userInitial }}</view>
+      <view class="avatar-edit">📷</view>
+    </view>
     <view class="user-info">
-      <view class="nickname">{{ userNickname }}</view>
+      <view class="nickname-row" bindtap="onEditNickname">
+        <view class="nickname">{{ userNickname }}</view>
+        <view class="edit-icon">✎</view>
+      </view>
       <view class="userid">微信小程序 · 已登录</view>
     </view>
   </view>
@@ -17,7 +24,7 @@
     </view>
   </view>
 
-  <!-- 配置状态横幅 -->
+  <!-- 配置状态 -->
   <view class="config-banner {{ isConfigured ? 'config-ok' : 'config-warn' }}" bindtap="onTapApiConfig">
     <view class="config-banner-text">
       <view class="config-banner-title">
@@ -46,7 +53,7 @@
     </view>
   </view>
 
-  <!-- 退出登录 -->
+  <!-- 退出 -->
   <view class="menu">
     <view class="menu-item" bindtap="onLogout">
       <view class="menu-text menu-danger">退出登录</view>

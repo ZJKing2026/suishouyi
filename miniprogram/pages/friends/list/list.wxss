@@ -1,0 +1,154 @@
+/* 页面基础 */
+.page {
+  min-height: 100vh;
+  background: #f7f7f8;
+  padding: 48rpx 32rpx 200rpx;
+  box-sizing: border-box;
+}
+
+/* 顶部标题 */
+.hero {
+  margin-bottom: 40rpx;
+}
+
+.hero-title {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12rpx;
+  letter-spacing: 2rpx;
+}
+
+.hero-subtitle {
+  font-size: 26rpx;
+  color: #8a8a8a;
+}
+
+/* 顶部操作按钮（邀请 + 输入邀请码） */
+.action-row {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.action-btn {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 32rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.15s;
+}
+
+.action-btn:active {
+  transform: scale(0.97);
+  background: #fafafa;
+}
+
+.action-icon {
+  font-size: 48rpx;
+  margin-bottom: 12rpx;
+  line-height: 1;
+}
+
+.action-text {
+  font-size: 26rpx;
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+/* 加载中 */
+.empty {
+  text-align: center;
+  padding: 200rpx 0;
+  color: #b0b0b0;
+  font-size: 28rpx;
+}
+
+/* 空状态卡片 */
+.empty-card {
+  background: #ffffff;
+  border-radius: 32rpx;
+  padding: 100rpx 40rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.9;
+  line-height: 1;
+}
+
+.empty-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 20rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #8a8a8a;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+/* 好友列表 */
+.friend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+  transition: transform 0.15s;
+}
+
+.friend-item:active {
+  transform: scale(0.99);
+  background: #fafafa;
+}
+
+.avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: #1a1a1a;
+  color: #ffffff;
+  font-size: 40rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 30rpx;
+  color: #1a1a1a;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrow {
+  font-size: 40rpx;
+  color: #cccccc;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}

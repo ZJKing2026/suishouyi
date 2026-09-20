@@ -1,0 +1,36 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">群聊</view>
+    <view class="hero-subtitle">多人的 AI 会议室</view>
+  </view>
+
+  <view class="empty" wx:if="{{ loading }}">加载中...</view>
+
+  <view class="empty-card" wx:elif="{{ groups.length === 0 }}">
+    <view class="empty-icon">💬</view>
+    <view class="empty-title">还没有群聊</view>
+    <view class="empty-desc">创建一个群，邀请好友一起聊</view>
+    <view class="empty-btn" bindtap="onCreate">创建群聊</view>
+  </view>
+
+  <view wx:else class="group-list">
+    <view
+      class="group-item"
+      wx:for="{{ groups }}"
+      wx:key="id"
+      data-id="{{ item.id }}"
+      bindtap="onTapGroup"
+    >
+      <view class="group-icon">👥</view>
+      <view class="group-info">
+        <view class="group-name">{{ item.name }}</view>
+        <view class="group-count">{{ item.member_count }} 位成员</view>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+  </view>
+
+  <view class="fab" bindtap="onCreate">
+    <text class="fab-icon">+</text>
+  </view>
+</view>

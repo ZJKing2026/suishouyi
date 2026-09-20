@@ -1,0 +1,13 @@
+.page { min-height: 100vh; background: #f7f7f8; padding: 48rpx 32rpx; box-sizing: border-box; }
+.hero { margin-bottom: 48rpx; }
+.hero-title { font-size: 56rpx; font-weight: 700; color: #1a1a1a; margin-bottom: 12rpx; }
+.hero-subtitle { font-size: 26rpx; color: #8a8a8a; }
+.card { background: #fff; border-radius: 24rpx; padding: 40rpx 32rpx; margin-bottom: 32rpx; }
+.field { margin-bottom: 32rpx; }
+.field-label { font-size: 26rpx; color: #333; margin-bottom: 12rpx; }
+.field-input { width: 100%; height: 88rpx; background: #f7f7f8; border-radius: 16rpx; padding: 0 28rpx; box-sizing: border-box; font-size: 30rpx; font-family: monospace; }
+.btn-primary { width: 100%; background: #1a1a1a; color: #fff; font-size: 30rpx; border-radius: 16rpx; border: none; padding: 28rpx 0; }
+.btn-primary[disabled] { background: #ccc; }
+.tips { background: #fff; border-radius: 20rpx; padding: 28rpx; }
+.tips-title { font-size: 26rpx; font-weight: 600; color: #1a1a1a; margin-bottom: 12rpx; }
+.tips-line { font-size: 24rpx; color: #666; line-height: 1.8; }

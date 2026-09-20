@@ -310,6 +310,108 @@ page {
   width: 88rpx;
 }
 
+/* ========== AI 请示卡片 ========== */
+.req-list {
+  padding: 0 var(--sp-page);
+  flex-shrink: 0;
+}
+
+.req-card {
+  background: var(--accent-soft);
+  border: 1rpx solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--sp-md);
+  margin-bottom: var(--sp-sm);
+}
+
+.req-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-sm);
+}
+
+.req-title {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--accent-deep);
+}
+
+.req-from {
+  font-size: var(--fs-tiny);
+  color: var(--ink-faint);
+}
+
+.req-question {
+  font-size: var(--fs-body);
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: var(--sp-sm);
+  word-break: break-all;
+}
+
+.req-context {
+  background: var(--surface);
+  border-radius: var(--r-sm);
+  padding: var(--sp-sm);
+  margin-bottom: var(--sp-sm);
+}
+
+.req-context-text {
+  font-size: var(--fs-tiny);
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.req-suggest {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--sp-md);
+}
+
+.req-suggest-label {
+  font-size: var(--fs-tiny);
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  margin-right: var(--sp-xs);
+  padding-top: 2rpx;
+}
+
+.req-suggest-text {
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.req-actions {
+  display: flex;
+  gap: var(--sp-xs);
+}
+
+.req-btn {
+  flex: 1;
+  height: 64rpx;
+  line-height: 64rpx;
+  text-align: center;
+  font-size: var(--fs-small);
+  border-radius: var(--r-btn);
+  background: var(--surface);
+  color: var(--ink-soft);
+  border: 1rpx solid var(--line);
+}
+
+.req-btn-primary {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.req-btn-ghost {
+  background: transparent;
+  color: var(--ink-faint);
+}
+
 /* ========== 消息列表 ========== */
 .msg-list {
   flex: 1;

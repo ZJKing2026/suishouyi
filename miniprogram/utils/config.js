@@ -6,4 +6,4 @@ export const BASE_URL = 'http://localhost:8000/api/v1';
 export const GITHUB_URL = 'https://github.com/ZJKing2026/suishouyi';
 
 // 版本号
-export const APP_VERSION = 'v0.3.0';
+export const APP_VERSION = 'v1.0.0';

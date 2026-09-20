@@ -4,7 +4,6 @@ import { upload } from '../../utils/upload.js';
 import { getUser, getToken } from '../../utils/auth.js';
 import { parseMarkdown } from '../../utils/markdown.js';
 import { BASE_URL } from '../../utils/config.js';
-import { getSafeAreaMetrics, formatTime as formatTimeLabel } from '../../utils/ui.js';
 
 const RAG_STORAGE_KEY = 'rag_enabled';
 const recorderManager = wx.getRecorderManager();
@@ -34,14 +33,20 @@ Page({
     // 录音
     recording: false,
     voiceStatus: '正在录音...',
-    voiceTimeText: '00:00'
+    voiceTimeText: '00:00',
+
+    // AI 请示
+    pendingRequests: [],
+    requestAnswer: ''
   },
 
   onLoad() {
+    const sysInfo = wx.getSystemInfoSync();
     const cachedRag = wx.getStorageSync(RAG_STORAGE_KEY);
 
     this.setData({
-      ...getSafeAreaMetrics(),
+      statusBarHeight: sysInfo.statusBarHeight || 20,
+      safeBottom: 0,
       ragEnabled: cachedRag === true
     });
 
@@ -49,9 +54,14 @@ Page({
     this.loadSessions();
     this.loadRagStatus();
     this.setupRecorder();
+    this.loadPendingRequests();
   },
 
   onShow() {
+    // 每次页面可见时刷新用户信息（昵称/头像可能改了）
+    this.loadUserInfo();
+    this.loadPendingRequests();
+
     if (this.data.sessionId) {
       this.loadHistory();
     }
@@ -221,6 +231,51 @@ Page({
     wx.navigateTo({ url: '/pages/rag/rag' });
   },
 
+  // ==================== AI 请示 ====================
+  async loadPendingRequests() {
+    try {
+      const res = await request('/agent-requests/pending', 'GET');
+      this.setData({ pendingRequests: res.requests || [] });
+    } catch (err) {
+      // 拉不到就静默失败，不打断主流程
+      console.error('加载请示失败:', err);
+    }
+  },
+
+  onRequestResolve(e) {
+    const { id, action } = e.currentTarget.dataset;
+    if (action === 'custom') {
+      wx.showModal({
+        title: '自己回一句',
+        editable: true,
+        placeholderText: '想怎么回？',
+        success: (r) => {
+          if (r.confirm && r.content && r.content.trim()) {
+            this.doResolve(id, 'custom', r.content.trim());
+          }
+        }
+      });
+      return;
+    }
+    this.doResolve(id, action, '');
+  },
+
+  async doResolve(requestId, action, answer) {
+    wx.showLoading({ title: '处理中...', mask: true });
+    try {
+      await request(`/agent-requests/${requestId}/resolve`, 'POST', { action, answer });
+      wx.hideLoading();
+
+      const tip = action === 'approve' ? '已按建议回复'
+        : action === 'reject' ? '已回绝' : '已回复';
+      wx.showToast({ title: tip, icon: 'success' });
+      this.loadPendingRequests();
+    } catch (err) {
+      wx.hideLoading();
+      wx.showModal({ title: '处理失败', content: err.message, showCancel: false });
+    }
+  },
+
   // ==================== 会话 ====================
   async loadSessions() {
     try {
@@ -381,6 +436,8 @@ Page({
   // ==================== 抽屉 ====================
   openDrawer() {
     this.setData({ drawerOpen: true, attachPanelOpen: false });
+    // 打开抽屉时刷新用户信息
+    this.loadUserInfo();
     if (this.data.drawerTab === 'tasks') {
       this.loadTasks();
     } else {
@@ -400,6 +457,7 @@ Page({
     this.setData({ attachPanelOpen: false });
   },
 
+  // ==================== 抽屉底部菜单 ====================
   onTapRag() {
     this.setData({ drawerOpen: false });
     wx.navigateTo({ url: '/pages/rag/rag' });
@@ -418,6 +476,16 @@ Page({
   onTapNotes() {
     this.setData({ drawerOpen: false });
     wx.navigateTo({ url: '/pages/notes/list/list' });
+  },
+
+  onTapFriends() {
+    this.setData({ drawerOpen: false });
+    wx.navigateTo({ url: '/pages/friends/list/list' });
+  },
+
+  onTapGroups() {
+    this.setData({ drawerOpen: false });
+    wx.navigateTo({ url: '/pages/groups/list/list' });
   },
 
   onTapTools() {
@@ -658,6 +726,17 @@ Page({
 
   // ==================== 工具方法 ====================
   formatTime(isoString) {
-    return formatTimeLabel(isoString);
+    if (!isoString) return '';
+    const d = new Date(isoString);
+    const now = new Date();
+    const diffMs = now - d;
+    const diffMin = Math.floor(diffMs / 60000);
+    if (diffMin < 1) return '刚刚';
+    if (diffMin < 60) return `${diffMin} 分钟前`;
+    const diffHour = Math.floor(diffMin / 60);
+    if (diffHour < 24) return `${diffHour} 小时前`;
+    const diffDay = Math.floor(diffHour / 24);
+    if (diffDay < 7) return `${diffDay} 天前`;
+    return `${d.getMonth() + 1}月${d.getDate()}日`;
   }
 })

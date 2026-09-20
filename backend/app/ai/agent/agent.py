@@ -1,9 +1,7 @@
-"""Agent 编排：LLM 与工具/知识库/MCP 的循环交互。"""
+"""Agent 编排：LLM 与工具/知识库/好友/MCP 的循环交互。"""
 import json
-
 from sqlalchemy.orm import Session
 
-from app.core.logging import get_logger
 from app.models.message import Message
 from app.models.user_config import UserConfig
 from app.ai.llm.factory import get_llm_client_for_user
@@ -11,12 +9,10 @@ from app.ai.agent.tools import (
     BUILTIN_SCHEMAS,
     KNOWLEDGE_SCHEMAS,
     NOTE_SCHEMAS,
+    FRIEND_SCHEMAS,
 )
 from app.ai.agent.executor import execute_tool_async
 from app.services.tool_service import tool_service
-
-
-logger = get_logger(__name__)
 
 
 SYSTEM_PROMPT = """你是一个有工具能力的 AI 助手。
@@ -25,8 +21,10 @@ SYSTEM_PROMPT = """你是一个有工具能力的 AI 助手。
 重要行为准则：
 1. 如果用户提到"我上传的"、"我的简历"、"我的文档"、"根据资料"，先调用 search_knowledge_base 检索
 2. 如果需要保存长内容（如求职信、方案、报告），调用 save_note 保存
-3. 需要多步操作时，一步步来，不要着急回复
-4. 回答要简洁、直接、有重点
+3. ⭐ 如果用户说"帮我问问xx"、"帮我问xx"、"xx怎么看"、"帮我问下xx"——这是让 AI 代理去问好友，直接调用 ask_friend，它会自动返回好友的回复
+4. 如果用户说"告诉xx"、"通知xx"——这是单方面通知，调用 send_to_friend
+5. 需要多步操作时，一步步来，不要着急回复
+6. 回答要简洁、直接、有重点
 """
 
 MAX_TOOL_ROUNDS = 8
@@ -61,14 +59,16 @@ class Agent:
         tools_for_llm = list(BUILTIN_SCHEMAS)
 
         # 3.1 知识库 + 笔记工具
-        #     两处开关同时满足才挂知识库：调用方传的 use_rag，以及用户配置里的 rag_enabled
         cfg = db.query(UserConfig).filter(UserConfig.user_id == user_id).first()
-        rag_on = use_rag and bool(cfg and cfg.rag_enabled)
-        if cfg and cfg.embedding_api_key and rag_on:
+        if cfg and cfg.embedding_api_key:
             tools_for_llm.extend(KNOWLEDGE_SCHEMAS)
             tools_for_llm.extend(NOTE_SCHEMAS)
-        elif cfg and cfg.embedding_api_key:
-            tools_for_llm.extend(NOTE_SCHEMAS)
+
+        # 3.1.5 好友工具（每个用户都有）
+        try:
+            tools_for_llm.extend(FRIEND_SCHEMAS)
+        except Exception as e:
+            print(f"⚠️ 加载好友工具失败：{e}")
 
         # 3.2 用户自定义工具
         user_tools = tool_service.list_enabled_tools(db, user_id)
@@ -95,7 +95,6 @@ class Agent:
                     continue
                 srv_tools = mcp_service.parse_cached_tools(srv)
                 for mt in srv_tools:
-                    # 工具名加前缀，避免冲突
                     full_name = f"mcp{srv.id}__{mt['name']}"
                     tools_for_llm.append({
                         "type": "function",
@@ -106,7 +105,7 @@ class Agent:
                         }
                     })
         except Exception as e:
-            logger.warning("加载 MCP 工具失败：%s", e)
+            print(f"⚠️ 加载 MCP 工具失败：{e}")
 
         # 4. 拼消息
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
@@ -132,7 +131,7 @@ class Agent:
                     fn_args = call["function"]["arguments"]
                     used_tools.append(fn_name)
 
-                    logger.debug("调用工具：%s(%s)", fn_name, fn_args[:100])
+                    print(f"🔧 调用工具：{fn_name}({fn_args[:100]})")
                     tool_result = await execute_tool_async(db, user_id, fn_name, fn_args)
 
                     messages.append({

@@ -1,0 +1,28 @@
+.page {
+  min-height: 100vh;
+  background: #f7f7f8;
+  padding: 48rpx 32rpx 200rpx;
+  box-sizing: border-box;
+}
+.hero { margin-bottom: 40rpx; }
+.hero-title { font-size: 56rpx; font-weight: 700; color: #1a1a1a; margin-bottom: 12rpx; }
+.hero-subtitle { font-size: 26rpx; color: #8a8a8a; }
+
+.empty { text-align: center; padding: 200rpx 0; color: #b0b0b0; font-size: 28rpx; }
+.empty-card { background: #fff; border-radius: 32rpx; padding: 100rpx 40rpx; text-align: center; margin-top: 60rpx; }
+.empty-icon { font-size: 120rpx; margin-bottom: 32rpx; }
+.empty-title { font-size: 34rpx; font-weight: 600; color: #1a1a1a; margin-bottom: 20rpx; }
+.empty-desc { font-size: 26rpx; color: #8a8a8a; line-height: 1.8; margin-bottom: 56rpx; }
+.empty-btn { display: inline-block; padding: 24rpx 64rpx; background: #1a1a1a; color: #fff; font-size: 28rpx; border-radius: 48rpx; }
+
+.group-list { display: flex; flex-direction: column; gap: 16rpx; }
+.group-item { display: flex; align-items: center; background: #fff; border-radius: 24rpx; padding: 28rpx 32rpx; }
+.group-item:active { background: #fafafa; }
+.group-icon { width: 88rpx; height: 88rpx; border-radius: 20rpx; background: #f7f7f8; font-size: 44rpx; display: flex; align-items: center; justify-content: center; margin-right: 24rpx; }
+.group-info { flex: 1; min-width: 0; }
+.group-name { font-size: 30rpx; font-weight: 500; color: #1a1a1a; margin-bottom: 6rpx; }
+.group-count { font-size: 22rpx; color: #999; }
+.arrow { font-size: 40rpx; color: #ccc; }
+
+.fab { position: fixed; right: 48rpx; bottom: 80rpx; width: 120rpx; height: 120rpx; border-radius: 50%; background: #1a1a1a; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 12rpx 32rpx rgba(0,0,0,0.25); }
+.fab-icon { font-size: 64rpx; font-weight: 200; line-height: 1; margin-top: -6rpx; }
